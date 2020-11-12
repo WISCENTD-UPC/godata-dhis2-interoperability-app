@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2020-11-12T14:47:33.684Z\n"
+"PO-Revision-Date: 2020-11-12T14:47:33.684Z\n"
+
+msgid "An error ocurred while saving theme"
+msgstr ""
+
+msgid "Delete {{count}} themes"
+msgid_plural "Delete {{count}} themes"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Are you sure you want to remove selected themes"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Logo"
+msgstr ""
+
+msgid "Color options"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Subtitle"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Ok"
+msgstr ""
+
+msgid "Create theme"
+msgstr ""
+
+msgid "Themes"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
