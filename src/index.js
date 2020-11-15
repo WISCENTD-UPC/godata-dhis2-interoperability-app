@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom'
 import { D2Api } from 'd2-api/2.30'
 import { DHIS2API } from 'dhis2-api-wrapper'
 import { DHIS2APIConfig } from './config'
+import App from "./webapp/components/app/App"
 
 const isLangRTL = code => {
     const langs = ["ar", "fa", "ur"]
@@ -32,7 +33,7 @@ async function main() {
         console.log(DHIS2API)
         ReactDOM.render(
             <Provider config={{ baseUrl, apiVersion: "30" }}>
-                {/*<App />*/}
+                <App />
                 <p>is this working?</p>
             </Provider>,
             document.getElementById("root")

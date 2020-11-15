@@ -6,10 +6,7 @@ export interface AppContextI {
     d2: Object;
 }
 
-export const AppContext = createContext({
-    api: D2Api,
-    d2: Object
-});
+export const AppContext = createContext<AppContextI | null>(null);
 
 export function useAppContext() {
     const context = useContext(AppContext);

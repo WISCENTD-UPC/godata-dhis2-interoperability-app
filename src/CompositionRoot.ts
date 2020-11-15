@@ -1,7 +1,7 @@
 import { D2Api } from "./types/d2-api";
 import { ConfigWebRepository, JsonConfig } from "./data/ConfigWebRepository";
 
-//import { InstanceDhisRepository } from "./data/InstanceDhisRepository";
+import { InstanceDhisRepository } from "./data/InstanceDhisRepository";
 import { StorageConstantRepository } from "./data/StorageConstantRepository";
 import { StorageDataStoreRepository } from "./data/StorageDataStoreRepository";
 import { TemplateWebRepository } from "./data/TemplateWebRepository";
@@ -15,6 +15,12 @@ import { DeleteThemeUseCase } from "./domain/usecases/DeleteThemeUseCase";
 //import { ListLanguagesUseCase } from "./domain/usecases/ListLanguagesUseCase";
 import { ListThemesUseCase } from "./domain/usecases/ListThemesUseCase";
 import { SaveThemeUseCase } from "./domain/usecases/SaveThemeUseCase";
+
+import { ReadSettingsUseCase } from "./domain/usecases/ReadSettingsUseCase"
+import { WriteSettingsUseCase } from "./domain/usecases/WriteSettingsUseCase"
+import { GetDefaultSettingsUseCase } from "./domain/usecases/GetDefaultSettingsUseCase"
+
+import { ListDataFormsUseCase } from "./domain/usecases/ListDataFormsUseCase"
 
 export interface CompositionRootOptions {
     appConfig: JsonConfig;
@@ -31,7 +37,7 @@ export class CompositionRoot {
     
 
     private constructor({ appConfig, dhisInstance, mockApi }: CompositionRootOptions) {
-        //this.instance = new InstanceDhisRepository(dhisInstance, mockApi); should be calling dhis2 wrapper
+        this.instance = new InstanceDhisRepository(dhisInstance, mockApi); 
         this.config = new ConfigWebRepository(appConfig);
         this.storage =
             this.config.getAppStorage() === "dataStore"
@@ -66,6 +72,11 @@ export class CompositionRoot {
             getDataPackage: new GetFormDataPackageUseCase(this.instance),
         };
     }*/
+    public get templates() {
+        return {
+            list: new ListDataFormsUseCase(this.instance),
+        };
+    }
 
     public get themes() {
         return {

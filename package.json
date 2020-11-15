@@ -12,7 +12,9 @@
   },
   "devDependencies": {
     "@dhis2/cli-app-scripts": "^5.4.1",
-    "@types/lodash": "^4.14.165"
+    "@types/lodash": "^4.14.165",
+    "@types/react-color": "^3.0.4",
+    "@types/react-router-dom": "^5.1.6"
   },
   "dependencies": {
     "@dhis2/app-runtime": "^2.5.0",
@@ -24,6 +26,8 @@
     "dhis2-godata-interoperability": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-godata-interoperability.git#develop",
     "godata-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/godata-api-wrapper.git#develop",
     "lodash": "^4.17.20",
+    "react-color": "^2.19.3",
+    "react-dropzone": "^11.2.4",
     "react-router-dom": "^5.2.0"
   },
   "main": "./src/index.js",
