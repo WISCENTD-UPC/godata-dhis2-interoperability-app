@@ -1,7 +1,7 @@
 {
   "name": "interoperability-app",
   "version": "1.0.0",
-  "description": "This project was bootstrapped with [DHIS2 Application Platform](https://github.com/dhis2/app-platform).",
+  "description": "",
   "license": "BSD-3-Clause",
   "private": true,
   "scripts": {
@@ -11,33 +11,21 @@
     "deploy": "d2-app-scripts deploy"
   },
   "devDependencies": {
-    "@dhis2/cli-app-scripts": "^5.4.1",
-    "@types/lodash": "^4.14.165",
-    "@types/react-color": "^3.0.4",
+    "@dhis2/cli-app-scripts": "^5.5.0",
     "@types/react-router-dom": "^5.1.6"
   },
   "dependencies": {
-    "@dhis2/app-runtime": "^2.5.0",
-    "@material-ui/core": "^4.11.0",
-    "d2": "^31.8.2",
-    "d2-api": "^1.3.0",
+    "@dhis2/app-runtime": "^2.6.1",
+    "@dhis2/d2-i18n": "^1.0.6",
+    "@dhis2/ui-core": "^5.7.7",
+    "@dhis2/ui-widgets": "^5.7.7",
+    "@material-ui/core": "^4.11.1",
+    "@material-ui/styles": "^4.11.1",
+    "axios": "^0.21.0",
     "d2-ui-components": "^2.2.0",
     "dhis2-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-api-wrapper.git#develop",
     "dhis2-godata-interoperability": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-godata-interoperability.git#develop",
     "godata-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/godata-api-wrapper.git#develop",
-    "lodash": "^4.17.20",
-    "react-color": "^2.19.3",
-    "react-dropzone": "^11.2.4",
     "react-router-dom": "^5.2.0"
-  },
-  "main": "./src/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/WISCENTD-UPC/interoperability-app.git"
-  },
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/WISCENTD-UPC/interoperability-app/issues"
-  },
-  "homepage": "https://github.com/WISCENTD-UPC/interoperability-app#readme"
+  }
 }

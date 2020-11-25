@@ -1,3 +1,6 @@
 node_modules
 .d2
-/src/locales
+build
+
+# DHIS2 Platform
+src/locales
