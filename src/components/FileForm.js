@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { AlertBar, Button, Card } from '@dhis2/ui-core'
+import { AlertBar, Button, Card, Radio } from '@dhis2/ui-core'
 import { FileInputField } from '@dhis2/ui-widgets'
 import i18n from '@dhis2/d2-i18n' //do translations!
-import Actions from "./Actions";
+import '../styles/FileForm.css'
+
 
 const FileForm = () => {
     const [file, setFile] = useState(null)
@@ -11,15 +12,16 @@ const FileForm = () => {
     const [isUploaded, setUploaded] = useState(false)
 
     function onFormSubmit() {
-        setFileOk(true)
-        if (file != null && file.type=='application/json') {          
+        if (file != null && file.type==='application/json') {          
             fileUpload(file)
         } else {
             setFileOk(false)
         }
     }
     
-    function onFileChange(payload, event) {
+    function onFileChange(payload) {
+        setFileOk(true)
+        setUploaded(false)
         setFile(payload.files[0])
         console.log('file', file)
 
@@ -36,34 +38,42 @@ const FileForm = () => {
     }
 
     return (
-        <div> 
-            <div
-                style={ {
-                    position: fixed,
-                    width: 60,
-                    zIndex: 700,
-                    alignItems: center,
-                } }> 
-                <MyCard dataTest="dhis2-uicore-card" className="file-form">
-                    <FileInputField 
-                        accept="application/json" 
-                        buttonLabel="Upload file" 
-                        dataTest="dhis2-uiwidgets-fileinputfield"
-                        name="upload"
-                        onChange={ onFileChange }
-                        placeholder={file!=null ? file.name : "No file uploaded yet"}
-                        required
-                    />
-                    <Button
-                        dataTest="dhis2-uicore-button"
-                        name="button"
-                        onClick={ onFormSubmit }
-                        type="button"
-                    >
-                        Submit
-                    </Button>
-                </MyCard>
+        <div className="container"> 
+            <div className="card"> 
+                <Card dataTest="dhis2-uicore-card">
+                    <h3>Import credentials</h3>
+                    <div className="content">
+                        <FileInputField 
+                            className="input"
+                            accept="application/json" 
+                            buttonLabel={ file!=null ? file.name : "Choose a file to upload" }
+                            dataTest="dhis2-uiwidgets-fileinputfield"
+                            name="upload"
+                            onChange={ onFileChange }
+                            placeholder=""
+                            required
+                        />
+                        <p>Format</p>
+                        <Radio 
+                            dataTest="dhis2-uicore-radio"
+                            label="JSON"
+                            checked
+                            disabled
+                        />
+                    </div>
+                    <div className="import">
+                        <Button
+                            dataTest="dhis2-uicore-button"
+                            name="button"
+                            onClick={ onFormSubmit }
+                            type="button"
+                        >
+                            Import
+                        </Button>
+                    </div>
+                </Card>
             </div>
+            <div className="alert-bars">
             { !isFileOk && 
                 <AlertBar 
                     dataTest="dhis2-uicore-alertbar" 
@@ -81,9 +91,10 @@ const FileForm = () => {
                     >
                         File uploaded correctly
                     </AlertBar>
-                    <Actions config={ config }/>
                 </div> 
             }
+            </div>
+            
         </div>
     )
     

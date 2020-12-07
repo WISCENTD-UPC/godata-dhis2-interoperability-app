@@ -1,0 +1,74 @@
+.content {
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+    padding: 10px 0 40px 16px;
+}
+
+h3 {
+    margin: 3px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 8px 10px 6px;
+}
+
+.input button {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    padding: 0px !important;
+    text-transform: uppercase;
+    background-color: white !important;
+    color: black !important;
+    border: none !important;
+}
+
+.import {
+    padding: 10px 0 10px 16px;
+}
+.import button {  
+    font-weight: 500 !important;
+    text-transform: uppercase;
+    background-color: rgb(76, 112, 140) !important;
+    color: white !important;
+    border: none !important;
+    width: 80px;
+    opacity: 1;
+    transition: 0.3s;
+}
+
+.import button:hover {opacity: 0.6;}
+
+.card {
+    display: flex;
+    width: 600px !important;
+    position: relative;
+    flex-direction: column;
+    padding-bottom: 60px;
+}
+
+p {
+    font-weight: 600;
+    font-size: 13px;
+    margin: 5px;
+    text-transform: uppercase;
+    color: black;
+}
+
+.container {
+    display: flex;
+    left: 700px;
+    top: 100px;
+    position: fixed;
+    height: 100vh;
+    margin-bottom: 60px;
+    overflow-y: scroll;
+}
+
+
+.alert-bars {
+    bottom: 0px;
+    left: 0px;
+    padding-left: 16px;
+    position: fixed;
+    width: 100%;
+}

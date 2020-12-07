@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import DHIS2API from 'dhis2-api-wrapper'
-import GoDataAPI from 'godata-api-wrapper'
-import * as int from 'dhis2-godata-interoperability'
+//import DHIS2API from 'dhis2-api-wrapper'
+//import GoDataAPI from 'godata-api-wrapper'
+//import * as int from 'dhis2-godata-interoperability'
 
 const Actions = (props) => {
-    const config = props.config
+    /*const config = props.config
     console.log(config)
     const dhis2 = new DHIS2API(config.DHIS2APIConfig)
     console.log(dhis2)
@@ -25,8 +25,8 @@ const Actions = (props) => {
     }
     //copyOrgUnits()    
     const res = 'smth'//orgUnits.map(orgUnit => <div key={ orgUnit.id }>{ orgUnit.name }</div>) //this is to be sure it works
-    return (
-    <div>{ res }</div>
+    */return (
+    null
     )
 }
 

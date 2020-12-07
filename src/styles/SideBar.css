@@ -1,0 +1,28 @@
+.sidebar {
+    display: block;
+    left: 0;
+    padding-left: 30px;
+    padding-top: 40px;
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    width: 300px;
+}
+
+.button {
+    background-color: #f3f3f3;
+    border: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: black;
+    margin-bottom: 12px;
+    transition: 0.3s;
+}
+
+.button:hover {
+    color: #2196f3;
+}
+
+.button:focus {
+    color: #2196f3;
+}

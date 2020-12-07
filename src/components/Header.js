@@ -1,7 +1,6 @@
 import React from 'react'
-import { number, string } from 'prop-types'
+import { string } from 'prop-types'
 import styled from 'styled-components'
-import { DataProvider } from '@dhis2/app-runtime'
 import { HeaderBar } from '@dhis2/ui-widgets'
 
 const StickyHeaderBar = styled(HeaderBar)`
@@ -11,16 +10,12 @@ const StickyHeaderBar = styled(HeaderBar)`
     top: 0;
 `
 
-const Header = ({ baseUrl, appName, apiVersion }) => (
-    <DataProvider baseUrl={ baseUrl } apiVersion={ apiVersion }>
-        <StickyHeaderBar appName= { appName } />
-    </DataProvider>
+const Header = (appName) => (
+    <StickyHeaderBar appName= { appName } />
 )
 
 Header.propTypes = {
-    baseUrl: string.isRequired,
     appName: string.isRequired,
-    apiVersion: number.isRequired
 }
 
 export default Header
