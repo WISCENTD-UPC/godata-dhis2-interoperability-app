@@ -2,6 +2,11 @@
   "name": "interoperability-app",
   "version": "0.1.0",
   "private": true,
+  "description": "Simple DHIS2 app to allow interoperability between DHIS2 and GoData instances",
+  "developer": {
+    "name": "Raquel Panadero",
+    "email": "raquel.panapalen@gmail.com"
+  },
   "dependencies": {
     "@dhis2/app-runtime": "^2.6.1",
     "@dhis2/d2-i18n": "^1.0.6",
@@ -21,7 +26,9 @@
     "rxjs": "^6.6.3",
     "styled-components": "^5.2.1",
     "styled-jsx": "^3.3.2",
-    "typeface-roboto": "^1.1.13"
+    "typeface-roboto": "^1.1.13",
+    "dhis2-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-api-wrapper.git#develop",
+    "godata-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/godata-api-wrapper.git#develop"
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.6",
@@ -30,7 +37,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && d2-manifest package.json build/manifest.wwebapp",
+    "build": "react-scripts build && d2-manifest package.json build/manifest.webapp",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -52,6 +59,11 @@
       "last 1 safari version"
     ]
   },
+  "icons": {
+    "16": "favicon-16x16.png",
+    "32": "favicon-32x32.png",
+    "48": "favicon-48x48.png" 
+  }, 
   "manifest.webapp": {
     "name": "Interoperability App",
     "description": "Interoperability between DHIS2 and GoData",
