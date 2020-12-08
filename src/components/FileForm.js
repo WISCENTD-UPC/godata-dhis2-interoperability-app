@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { AlertBar, Button, Card, Radio } from '@dhis2/ui-core'
 import { FileInputField } from '@dhis2/ui-widgets'
+import VpnKeyIcon from '@material-ui/icons/VpnKey'
 import i18n from '@dhis2/d2-i18n' //do translations!
 import '../styles/FileForm.css'
 
@@ -40,8 +41,11 @@ const FileForm = () => {
     return (
         <div className="container"> 
             <div className="card"> 
-                <Card dataTest="dhis2-uicore-card">
-                    <h3>Import credentials</h3>
+                <Card className="card" dataTest="dhis2-uicore-card">
+                    <div className="title-icon">
+                        <VpnKeyIcon />
+                        <h3>Import credentials</h3>
+                    </div>
                     <div className="content">
                         <FileInputField 
                             className="input"

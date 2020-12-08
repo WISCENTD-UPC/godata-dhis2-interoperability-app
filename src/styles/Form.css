@@ -12,6 +12,20 @@
     margin-bottom: 10px;
 }
 
+.text-input-disabled {
+    background-color: #f5f5f5;
+    color: #808080;
+    outline: none;
+    outline-style: none;
+    outline-offset: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid rgb(189, 189, 189) 1px;
+    padding: 3px 10px;
+    margin-bottom: 10px;
+}
+
 .text-input-group {
     background-color: transparent;
     color: black;
@@ -50,6 +64,7 @@
 
 .radio {
     color: rgb(76, 112, 140) !important;
+    padding: 3px !important;
 }
 
 /* width */

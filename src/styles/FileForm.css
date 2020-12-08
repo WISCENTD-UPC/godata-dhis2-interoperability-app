@@ -39,11 +39,11 @@ h3 {
 .import button:hover {opacity: 0.6;}
 
 .card {
-    display: flex;
-    width: 600px !important;
-    position: relative;
+    display: flex !important;
+    width: 700px !important;
+    position: relative !important;
     flex-direction: column;
-    padding-bottom: 60px;
+    height: auto !important;
 }
 
 p {
@@ -57,11 +57,12 @@ p {
 .container {
     display: flex;
     left: 700px;
+    right: 0px;
     top: 100px;
     position: fixed;
-    height: 100vh;
     margin-bottom: 60px;
     overflow-y: scroll;
+    bottom: 0px;
 }
 
 
@@ -71,4 +72,12 @@ p {
     padding-left: 16px;
     position: fixed;
     width: 100%;
+}
+
+.title-icon {
+    padding: 3px 15px 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }
