@@ -19,16 +19,19 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "d2": "^31.8.2",
     "d2-ui-components": "^2.2.0",
+    "dhis2-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-api-wrapper.git#develop",
+    "dhis2-godata-interoperability": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-godata-interoperability.git#develop",
+    "godata-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/godata-api-wrapper.git#develop",
+    "ramda": "^0.27.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "rxjs": "^6.6.3",
     "styled-components": "^5.2.1",
     "styled-jsx": "^3.3.2",
-    "typeface-roboto": "^1.1.13",
-    "dhis2-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-api-wrapper.git#develop",
-    "godata-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/godata-api-wrapper.git#develop"
+    "typeface-roboto": "^1.1.13"
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.6",
@@ -62,8 +65,8 @@
   "icons": {
     "16": "favicon-16x16.png",
     "32": "favicon-32x32.png",
-    "48": "favicon-48x48.png" 
-  }, 
+    "48": "favicon-48x48.png"
+  },
   "manifest.webapp": {
     "name": "Interoperability App",
     "description": "Interoperability between DHIS2 and GoData",

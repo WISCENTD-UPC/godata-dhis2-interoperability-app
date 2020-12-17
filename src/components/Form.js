@@ -5,21 +5,23 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TuneIcon from '@material-ui/icons/Tune'
 import i18n from '@dhis2/d2-i18n' //do translations!
+import { getInstance } from 'd2'
 import '../styles/Form.css'
 import config from '../utils/config.base'
 
 
 const Form = () => {
     const [formData, setFormData] = useState(config)
-    const [isOk, setOk] = useState(true)
     const [isUploaded, setUploaded] = useState(false)
-    const modifyOutbreakConfig = formData.outbreakCreationMode===0
+    const showOutbreakGroupingLevel = formData.outbreakCreationMode===0
     
     function onFormSubmit() {
-        if (!modifyOutbreakConfig) {
-            formData.outbreakConfig = config.outbreakConfig
-        }
-        console.log(formData)
+        getInstance()
+        .then(d2 => {
+            d2.dataStore.get("interoperability")
+                .then(namespace => namespace.set("base-config", formData))
+        })
+        setUploaded(true)
     }
 
     //to handle text inputs
@@ -100,7 +102,6 @@ const Form = () => {
     const checkInt = (value) => {
         return isNaN(value) ? 0 : value
     }
-    console.log(formData)
 
 
     return (
@@ -242,199 +243,186 @@ const Form = () => {
                             <FormControlLabel value={ 0 } control={ <Radio className="radio"/> } label="Group" />
                             <FormControlLabel value={ 1 } control={ <Radio className="radio"/> } label="Expand" />
                         </RadioGroup>
-                        <p>Outbreak Creation Grouping Level</p>
-                        <span className="subtitle">Grouping level:</span>
+                        <div className="helper-text">GROUP mode creates one outbreak for each group of organisation units under a certain administrative level</div> 
+                        <div className="helper-text">EXPAND mode creates one outbreak for each organisation unit with tracked entities</div>
+                        { showOutbreakGroupingLevel &&
+                        <div>
+                            <p>Outbreak Creation Grouping Level</p>
+                            <span className="subtitle">Grouping level:</span>
+                            <input 
+                                className="text-input-group" 
+                                size="1"
+                                type="number"
+                                min="0"
+                                name="outbreakConfig.outbreakCreationGroupingLevel" 
+                                value={ checkInt(formData["outbreakConfig"].outbreakCreationGroupingLevel) }
+                                onChange={ handleOnChangeInteger }
+                            
+                            />
+                        </div> }
+                        <p>Outbreak Configuration</p>
+                        <span className="subtitle">Period follow-up:</span>
+                        <input 
+                            className="text-input-group"
+                            size="1"
+                            type="number"
+                            min="0"
+                            name="outbreakConfig.periodOfFollowup" 
+                            value={ checkInt(formData["outbreakConfig"].periodOfFollowup) }
+                            onChange={ handleOnChangeInteger }
+                        
+                        />
+                        <br />
+                        <span className="subtitle">Frequency of follow-up per day:</span>
                         <input 
                             className="text-input-group" 
                             size="1"
                             type="number"
                             min="0"
-                            name="outbreakConfig.outbreakCreationGroupingLevel" 
-                            value={ checkInt(formData["outbreakConfig"].outbreakCreationGroupingLevel) }
+                            name="outbreakConfig.frequencyOfFollowUpPerDay" 
+                            value={ checkInt(formData["outbreakConfig"].frequencyOfFollowUpPerDay) }
                             onChange={ handleOnChangeInteger }
-                        
-                        />
-                        <p>Follow-Up Assignment Algorithms</p>
-                        <span className="subtitle">Default:</span>
-                        <input 
-                            className="text-input-disabled" 
-                            size="25"
-                            value={ formData["followupAssignmentAlgorithms"][0] }
-                            disabled
                         />
                         <br />
-                        <span className="subtitle">Default:</span>
+                        <span className="subtitle">Number of days among known contacts:</span>
                         <input 
-                            className="text-input-disabled" 
-                            size="25"
-                            value={ formData["followupAssignmentAlgorithms"][1]}
-                            disabled
+                            className="text-input-group" 
+                            size="1"
+                            type="number"
+                            min="0"
+                            name="outbreakConfig.noDaysAmongContacts" 
+                            value={ checkInt(formData["outbreakConfig"].noDaysAmongContacts) }
+                            onChange={ handleOnChangeInteger }
                         />
-                        { modifyOutbreakConfig &&
-                        <div>
-                            <p>Outbreak Configuration</p>
-                            <span className="subtitle">Period follow-up:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" }
-                                size="1"
-                                type="number"
-                                min="0"
-                                name="outbreakConfig.periodOfFollowup" 
-                                value={ checkInt(formData["outbreakConfig"].periodOfFollowup) }
-                                onChange={ handleOnChangeInteger }
-                            
-                            />
-                            <br />
-                            <span className="subtitle">Frequency of follow-up per day:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="1"
-                                type="number"
-                                min="0"
-                                name="outbreakConfig.frequencyOfFollowUpPerDay" 
-                                value={ checkInt(formData["outbreakConfig"].frequencyOfFollowUpPerDay) }
-                                onChange={ handleOnChangeInteger }
-                            />
-                            <br />
-                            <span className="subtitle">Number of days among known contacts:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="1"
-                                type="number"
-                                min="0"
-                                name="outbreakConfig.noDaysAmongContacts" 
-                                value={ checkInt(formData["outbreakConfig"].noDaysAmongContacts) }
-                                onChange={ handleOnChangeInteger }
-                            />
-                            <br />
-                            <span className="subtitle">Number of days in known transmission chains:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="1"
-                                type="number"
-                                min="0"
-                                name="outbreakConfig.noDaysInChains" 
-                                value={ checkInt(formData["outbreakConfig"].noDaysInChains) }
-                                onChange={ handleOnChangeInteger }
-                            />
-                            <br />
-                            <span className="subtitle">Number of days not seen:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="1"
-                                type="number"
-                                min="0"
-                                name="outbreakConfig.noDaysNotSeen" 
-                                value={ checkInt(formData["outbreakConfig"].noDaysNotSeen) }
-                                onChange={ handleOnChangeInteger }
-                            />
-                            <br />
-                            <span className="subtitle">Number less than X contacts:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="1"
-                                type="number"
-                                min="0"
-                                name="outbreakConfig.noLessContacts" 
-                                value={ checkInt(formData["outbreakConfig"].noLessContacts) }
-                                onChange={ handleOnChangeInteger }
-                            />
-                            <br />
-                            <span className="subtitle">No days new contacts:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="1"
-                                type="number"
-                                min="0"
-                                name="outbreakConfig.noDaysNewContacts" 
-                                value={ checkInt(formData["outbreakConfig"].noDaysNewContacts) }
-                                onChange={ handleOnChangeInteger }
-                            />
-                            <br />
-                            <span className="subtitle">Reporting Geoprahical Level Id:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="1"
-                                type="number"
-                                min="0"
-                                name="outbreakConfig.reportingGeographicalLevelId" 
-                                value={ checkInt(formData["outbreakConfig"].reportingGeographicalLevelId) }
-                                onChange={ handleOnChangeInteger }
-                            />
-                            <br />
-                            <span className="subtitle">Case Id Mask:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="15"
-                                name="outbreakConfig.caseIdMask" 
-                                value={ formData["outbreakConfig"].caseIdMask }
-                                onChange={ handleOnChange }
-                            />
-                            <br />
-                            <span className="subtitle">Contact Id Mask:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="15"
-                                name="outbreakConfig.contactIdMask" 
-                                value={ formData["outbreakConfig"].contactIdMask }
-                                onChange={ handleOnChange }
-                            />
-                            <br />
-                            <span className="subtitle">Long periods between case onset:</span>
-                            <input 
-                                className={ modifyOutbreakConfig ? "text-input-group" : "text-input-disabled" } 
-                                size="1"
-                                type="number"
-                                min="0"
-                                name="outbreakConfig.longPeriodsBetweenCaseOnset" 
-                                value={ checkInt(formData["outbreakConfig"].longPeriodsBetweenCaseOnset) }
-                                onChange={ handleOnChangeInteger }
-                            />
-                            <br />
-                            <span className="subtitle">Active contact lab results:</span>
-                            <RadioGroup 
-                                className="radio-group"
-                                name="outbreakConfig.isContactLabResultsActive"
-                                value={ formData["outbreakConfig"].isContactLabResultsActive }
-                                onChange={ handleOnChangeBool }
-                            >
-                                <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
-                                <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
-                            </RadioGroup>
-                            <br />
-                            <span className="subtitle">Required date of onset:</span>
-                            <RadioGroup 
-                                className="radio-group"
-                                name="outbreakConfig.isDateOfOnsetRequired"
-                                value={ formData["outbreakConfig"].isDateOfOnsetRequired }
-                                onChange={ handleOnChangeBool }
-                            >
-                                <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
-                                <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
-                            </RadioGroup>
-                            <br />
-                            <span className="subtitle">Overwrite existing when generating follow-ups:</span>
-                            <RadioGroup 
-                                className="radio-group"
-                                name="outbreakConfig.generateFollowUpsOverwriteExisting"
-                                value={ formData["outbreakConfig"].generateFollowUpsOverwriteExisting }
-                                onChange={ handleOnChangeBool }
-                            >
-                                <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
-                                <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
-                            </RadioGroup>
-                            <br />
-                            <span className="subtitle">Keep team assignment when generating follow-ups:</span>
-                            <RadioGroup 
-                                className="radio-group"
-                                name="outbreakConfig.generateFollowUpsKeepTeamAssignment"
-                                value={ formData["outbreakConfig"].generateFollowUpsKeepTeamAssignment }
-                                onChange={ handleOnChangeBool }
-                            >
-                                <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
-                                <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
-                            </RadioGroup>
-                        </div>}
+                        <br />
+                        <span className="subtitle">Number of days in known transmission chains:</span>
+                        <input 
+                            className="text-input-group" 
+                            size="1"
+                            type="number"
+                            min="0"
+                            name="outbreakConfig.noDaysInChains" 
+                            value={ checkInt(formData["outbreakConfig"].noDaysInChains) }
+                            onChange={ handleOnChangeInteger }
+                        />
+                        <br />
+                        <span className="subtitle">Number of days not seen:</span>
+                        <input 
+                            className="text-input-group" 
+                            size="1"
+                            type="number"
+                            min="0"
+                            name="outbreakConfig.noDaysNotSeen" 
+                            value={ checkInt(formData["outbreakConfig"].noDaysNotSeen) }
+                            onChange={ handleOnChangeInteger }
+                        />
+                        <br />
+                        <span className="subtitle">Number less than X contacts:</span>
+                        <input 
+                            className="text-input-group" 
+                            size="1"
+                            type="number"
+                            min="0"
+                            name="outbreakConfig.noLessContacts" 
+                            value={ checkInt(formData["outbreakConfig"].noLessContacts) }
+                            onChange={ handleOnChangeInteger }
+                        />
+                        <br />
+                        <span className="subtitle">No days new contacts:</span>
+                        <input 
+                            className="text-input-group" 
+                            size="1"
+                            type="number"
+                            min="0"
+                            name="outbreakConfig.noDaysNewContacts" 
+                            value={ checkInt(formData["outbreakConfig"].noDaysNewContacts) }
+                            onChange={ handleOnChangeInteger }
+                        />
+                        <br />
+                        <span className="subtitle">Reporting Geoprahical Level Id:</span>
+                        <input 
+                            className="text-input-group" 
+                            size="1"
+                            type="number"
+                            min="0"
+                            name="outbreakConfig.reportingGeographicalLevelId" 
+                            value={ checkInt(formData["outbreakConfig"].reportingGeographicalLevelId) }
+                            onChange={ handleOnChangeInteger }
+                        />
+                        <br />
+                        <span className="subtitle">Case Id Mask:</span>
+                        <input 
+                            className="text-input-group" 
+                            size="15"
+                            name="outbreakConfig.caseIdMask" 
+                            value={ formData["outbreakConfig"].caseIdMask }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
+                        <span className="subtitle">Contact Id Mask:</span>
+                        <input 
+                            className="text-input-group" 
+                            size="15"
+                            name="outbreakConfig.contactIdMask" 
+                            value={ formData["outbreakConfig"].contactIdMask }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
+                        <span className="subtitle">Long periods between case onset:</span>
+                        <input 
+                            className="text-input-group" 
+                            size="1"
+                            type="number"
+                            min="0"
+                            name="outbreakConfig.longPeriodsBetweenCaseOnset" 
+                            value={ checkInt(formData["outbreakConfig"].longPeriodsBetweenCaseOnset) }
+                            onChange={ handleOnChangeInteger }
+                        />
+                        <br />
+                        <span className="subtitle">Active contact lab results:</span>
+                        <RadioGroup 
+                            className="radio-group"
+                            name="outbreakConfig.isContactLabResultsActive"
+                            value={ formData["outbreakConfig"].isContactLabResultsActive }
+                            onChange={ handleOnChangeBool }
+                        >
+                            <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
+                            <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
+                        </RadioGroup>
+                        <br />
+                        <span className="subtitle">Required date of onset:</span>
+                        <RadioGroup 
+                            className="radio-group"
+                            name="outbreakConfig.isDateOfOnsetRequired"
+                            value={ formData["outbreakConfig"].isDateOfOnsetRequired }
+                            onChange={ handleOnChangeBool }
+                        >
+                            <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
+                            <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
+                        </RadioGroup>
+                        <br />
+                        <span className="subtitle">Overwrite existing when generating follow-ups:</span>
+                        <RadioGroup 
+                            className="radio-group"
+                            name="outbreakConfig.generateFollowUpsOverwriteExisting"
+                            value={ formData["outbreakConfig"].generateFollowUpsOverwriteExisting }
+                            onChange={ handleOnChangeBool }
+                        >
+                            <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
+                            <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
+                        </RadioGroup>
+                        <br />
+                        <span className="subtitle">Keep team assignment when generating follow-ups:</span>
+                        <RadioGroup 
+                            className="radio-group"
+                            name="outbreakConfig.generateFollowUpsKeepTeamAssignment"
+                            value={ formData["outbreakConfig"].generateFollowUpsKeepTeamAssignment }
+                            onChange={ handleOnChangeBool }
+                        >
+                            <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
+                            <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
+                        </RadioGroup>
+                        
                     </div>
                     <div className="import">
                         <Button
@@ -449,14 +437,6 @@ const Form = () => {
                 </Card>
             </div>
             <div className="alert-bars">
-            { !isOk && 
-                <AlertBar 
-                    dataTest="dhis2-uicore-alertbar" 
-                    duration={8000} 
-                    icon permanent warning
-                >
-                    Error saving settings
-                </AlertBar> }
             { isUploaded && 
                 <div>
                     <AlertBar 

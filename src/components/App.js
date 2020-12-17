@@ -9,17 +9,20 @@ import Header from './Header'
 import Main from './Main'
 
 
-const App = ({ config, appName }) => (
-    <DataProvider config={ config }>
-        <MuiThemeProvider theme={ muiTheme }>
-            <OldMuiThemeProvider muiTheme={ muiThemeLegacy }>
-                <LoadingProvider>
-                    <Header appName={ appName }/>
-                    <Main />
-                </LoadingProvider>
-            </OldMuiThemeProvider>
-        </MuiThemeProvider>
-    </DataProvider>
-)
+const App = ({ config, appName }) => {
+
+    return (
+        <DataProvider config={ config }>
+            <MuiThemeProvider theme={ muiTheme }>
+                <OldMuiThemeProvider muiTheme={ muiThemeLegacy }>
+                    <LoadingProvider>
+                        <Header appName={ appName }/>
+                        <Main />
+                    </LoadingProvider>
+                </OldMuiThemeProvider>
+            </MuiThemeProvider>
+        </DataProvider>
+    )
+}
 
 export default App

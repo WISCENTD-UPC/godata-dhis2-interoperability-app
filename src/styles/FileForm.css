@@ -6,7 +6,6 @@
 
 h3 {
     margin: 3px;
-    font-family: 'Roboto', sans-serif;
     font-size: 18px;
     font-weight: 500;
     padding: 8px 10px 6px;
@@ -80,4 +79,8 @@ p {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+}
+
+.icon-button {
+    padding: 0 !important;
 }

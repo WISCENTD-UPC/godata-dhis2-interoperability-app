@@ -60,11 +60,19 @@
 .radio-group span {
     font-weight: 500;
     font-size: 14px;
+    font-family: inherit !important;
 }
 
 .radio {
     color: rgb(76, 112, 140) !important;
     padding: 3px !important;
+}
+
+.helper-text {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #494949;
+    padding-right: 5px;
 }
 
 /* width */
