@@ -27,21 +27,37 @@ const Form = () => {
     //to handle text inputs
     function handleOnChange(event) {
         const { value, name } = event.target
-        if (name.includes('.')) {
-            const query = name.split('.')
-            setFormData(prevData => ({ 
-                ...prevData,
-                [query[0]] : {
-                    ...prevData[query[0]],
-                    [query[1]]: value
-                } 
-            }))
-        } else {
-            setFormData(prevData => ({ 
-                ...prevData,
-                [name] : value 
-            }))
-        }        
+        const query = name.split('.')
+        switch(query.length) {
+            case 1: 
+                setFormData(prevData => ({ 
+                    ...prevData,
+                    [name] : value 
+                }))
+                break
+            case 2: 
+                setFormData(prevData => ({ 
+                    ...prevData,
+                    [query[0]] : {
+                        ...prevData[query[0]],
+                        [query[1]]: value
+                    } 
+                }))
+                break
+            case 3: 
+                setFormData(prevData => ({ 
+                    ...prevData,
+                    [query[0]] : {
+                        ...prevData[query[0]],
+                        [query[1]] : {
+                            ...prevData[query[0]][query[1]],
+                            [query[2]]: value
+                        }
+                    } 
+                }))
+                break
+            default: break       
+        }     
     }
 
     //to handle Dhis2 Data Elements Checks
@@ -152,10 +168,19 @@ const Form = () => {
                             onChange={ handleOnChange }
                         />
                         <p className="p">Dhis2 Key Program Stages</p>
+                        <span className="subtitle">Clinical Examination:</span>
+                        <input 
+                            className="text-input" 
+                            size="30"
+                            name="dhis2KeyProgramStages.clinicalExamination" 
+                            value={ formData["dhis2KeyProgramStages"].clinicalExamination }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
                         <span className="subtitle">Lab Request:</span>
                         <input 
                             className="text-input" 
-                            size="15"
+                            size="30"
                             name="dhis2KeyProgramStages.labRequest" 
                             value={ formData["dhis2KeyProgramStages"].labRequest }
                             onChange={ handleOnChange }
@@ -164,21 +189,39 @@ const Form = () => {
                         <span className="subtitle">Lab Results:</span>
                         <input 
                             className="text-input" 
-                            size="15"
+                            size="30"
                             name="dhis2KeyProgramStages.labResults" 
                             value={ formData["dhis2KeyProgramStages"].labResults }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
+                        <span className="subtitle">Health Outcome:</span>
+                        <input 
+                            className="text-input" 
+                            size="30"
+                            name="dhis2KeyProgramStages.healthOutcome" 
+                            value={ formData["dhis2KeyProgramStages"].healthOutcome }
                             onChange={ handleOnChange }
                         />
                         <br />
                         <span className="subtitle">Symptoms:</span>
                         <input 
                             className="text-input" 
-                            size="15"
+                            size="30"
                             name="dhis2KeyProgramStages.symptoms" 
                             value={ formData["dhis2KeyProgramStages"].symptoms }
                             onChange={ handleOnChange }
                         />
                         <p className="p">Dhis2 Key Attributes</p>
+                        <span className="subtitle">CaseID:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="dhis2KeyAttributes.caseID" 
+                            value={ formData["dhis2KeyAttributes"].caseID }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
                         <span className="subtitle">First Name:</span>
                         <input 
                             className="text-input" 
@@ -215,12 +258,57 @@ const Form = () => {
                             onChange={ handleOnChange }
                         />
                         <br />
-                        <span className="subtitle">Home Address:</span>
+                        <span className="subtitle">Address:</span>
                         <input 
                             className="text-input" 
                             size="15"
                             name="dhis2KeyAttributes.address" 
                             value={ formData["dhis2KeyAttributes"].address }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
+                        <span className="subtitle">Passport:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="dhis2KeyAttributes.passport" 
+                            value={ formData["dhis2KeyAttributes"].passport }
+                            onChange={ handleOnChange }
+                        />
+                        <p className="p">Dhis2 Key Data Elements</p>
+                        <span className="subtitle">Pregnancy:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="dhis2KeyDataElements.pregnancy" 
+                            value={ formData["dhis2KeyDataElements"].pregnancy }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
+                        <span className="subtitle">Date of onset:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="dhis2KeyDataElements.dateOfOnset" 
+                            value={ formData["dhis2KeyDataElements"].dateOfOnset }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
+                        <span className="subtitle">Health Outcome:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="dhis2KeyDataElements.healthOutcome" 
+                            value={ formData["dhis2KeyDataElements"].healthOutcome }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
+                        <span className="subtitle">Type of Vaccine:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="dhis2KeyDataElements.typeOfVaccine" 
+                            value={ formData["dhis2KeyDataElements"].typeOfVaccine }
                             onChange={ handleOnChange }
                         />
                         <p className="p">Dhis2 Data Elements Checks</p>
@@ -428,6 +516,15 @@ const Form = () => {
                             <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
                             <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
                         </RadioGroup>
+                        <p className="p">Metadata - Option sets</p>
+                        <span className="subtitle">Vaccine:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="metadata.optionSets.Vaccine" 
+                            value={ formData["metadata"].optionSets.Vaccine }
+                            onChange={ handleOnChange }
+                        />
                         <p className="p">Countries</p>
                         <input 
                             className="text-input" 
