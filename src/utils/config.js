@@ -7,14 +7,12 @@ const config = {
         }
     },
     DHIS2APIConfig: {
-        baseURL: 'https://covid19.dhis2.org/demo/api',
+        baseURL: 'http://localhost:8080/api',
         credentials: {
-            user: 'COVID',
-            password: 'StopCovid19!'
+            user: 'admin',
+            password: 'district'
         }
-    },
-    countries: [ 'Trainingland' ],
-    rootID: 'GD7TowwI46c'
+    }
 }
 
 export default config

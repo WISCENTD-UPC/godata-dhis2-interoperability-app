@@ -1,76 +1,171 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getInstance } from 'd2'
-import { Card } from '@dhis2/ui-core'
-import * as R from 'ramda'
+import { Button, Card } from '@dhis2/ui-core'
+import { Radio, RadioGroup, FormControlLabel, Stepper, Step, StepLabel, StepContent } from '@material-ui/core'
+import StorageIcon from '@material-ui/icons/Storage'
+import { mergeAll } from 'ramda'
 import DHIS2API from 'dhis2-api-wrapper'
 import GoDataAPI from 'godata-api-wrapper'
-//import { copyOrganisationUnits } from 'dhis2-godata-interoperability'
+import { copyOrganisationUnits, fullTransfer, copyCases, createOutbreaks, copyContacts, copyMetadata } from 'dhis2-godata-interoperability'
+import '../styles/Actions.css'
+import { getFullSteps, getFullStepContent, getSteps, getStepContent } from '../utils/labels'
 
 const Actions = () => {
-    const [credConfig, setCredConfig] = useState({})
-    const [baseConfig, setBaseConfig] = useState({})
-    const [config, setMainConfig] = useState({})
+    const [config, setConfig] = useState({})
     const [dhis2, setDhis2] = useState(null)
     const [godata, setGoData] = useState(null)
+    
+    const [full, setFull] = useState(true)
+    const [fullActiveStep, setFullActiveStep] = useState(0);
+    const fullTransferSteps = getFullSteps();
+    const [activeStep, setActiveStep] = useState(0);
+    const transferSteps = getSteps();
 
-    function init() {
-        getInstance()
-            .then(d2 => {
-                d2.dataStore.get("interoperability")
-                    .then(namespace => {        
-                        namespace.get("formData")
-                        .then(value => setBaseConfig(value))
+    const [done, setDone] = useState(false)
+    const [messages, setMessages] = useState([])
 
-                        namespace.get("fileFormData")
-                        .then(value => setCredConfig(value))
-                    })
-            })
-        setMainConfig(R.mergeAll(credConfig, baseConfig))
-        setDhis2(new DHIS2API(config.DHIS2APIConfig))
-        setGoData(new GoDataAPI(config.GoDataAPIConfig))
+    useEffect(() => {
+        async function initInstances() {
+            const d2 = await getInstance()
+            const namespace = await d2.dataStore.get("interoperability")
+            const baseConf = await namespace.get("base-config")
+            const credConf = await namespace.get("cred-config")
+
+            const conf = mergeAll([baseConf, credConf])
+            setConfig(conf)
+            setDhis2(new DHIS2API(conf.DHIS2APIConfig))
+            setGoData(new GoDataAPI(conf.GoDataAPIConfig))
+            
+        }
+        initInstances()
+    }, [])
+
+    const logAction = (message) => setMessages(prevArray => [...prevArray, message])
+    
+    const handleFullNext = () => {
+        async function action() {
+            switch(fullActiveStep) {
+                case 0: 
+                    await copyOrganisationUnits(dhis2, godata, config, { logAction: logAction })()
+                    break
+                case 1: 
+                    await fullTransfer(dhis2, godata, config, { logAction: logAction })()
+                    setDone(true)
+                    break
+                default: break
+            }
+        }
+        action()
+        setFullActiveStep(prev => prev + 1)
     }
-    /*
-    async function copyOrgUnits() {
-        const res = await copyOrganisationUnits(dhis2, godata, config)("orgUnits.json")
-        console.log(res)
-    }
-    /*
-    async function getOutbreaks() {
-        const res = await int.createOutbreaks(dhis2, godata, config)
-        console.log(res)
+    const handleNext = () => {
+        async function action() {
+            switch(activeStep) {
+                case 0: 
+                    await copyOrganisationUnits(dhis2, godata, config, { logAction: logAction })()
+                    break
+                case 1: 
+                    createOutbreaks(dhis2, godata, config, { logAction: logAction })()
+                    break
+                case 2: 
+                    copyCases(dhis2, godata, config, { logAction: logAction })()
+                    break
+                case 3: 
+                    copyContacts(dhis2, godata, config, { logAction: logAction })()
+                    setDone(true)
+                    break
+                default: break
+            }
+        }
+        action()
+        setActiveStep(prev => prev + 1)
     }
 
-    async function getCases() {
-        const res = await int.copyCases(dhis2, godata, config)
-        console.log(res)
-    }
-    //copyOrgUnits() 
-    async function getOrgUnits(dhis2) {
-        return await dhis2.getOrganisationUnitsFromParent(config.rootID)
-    } 
-    const orgUnits = getOrgUnits(dhis2)
-    //const res = orgUnits.map(orgUnit => <div key={ orgUnit.id }>{ orgUnit.name }</div>) //this is to be sure it works
-    
-    
-    async function getOrgUnits() {
-        console.log("orgUnits", await dhis2.getOrganisationUnitsFromParent(config.rootID))
-    }
-    getOrgUnits()*/
-    /*
-    async function getOutbreaks() {
-        console.log("outbreaks", await godata.getOutbreaks())
-    }
-    getOutbreaks()
-    */
-    copyOrgUnits()
-    
-    
     return (
         <div className="container"> 
             <div className="card"> 
                 <Card className="card" dataTest="dhis2-uicore-card">
-                    <button onClick={ init }>Click me!</button>
+                    <div className="title-icon">
+                        <StorageIcon />
+                        <h3>Base configuration settings</h3>
+                    </div>
+                    <div className="content">
+                        <p className="p">Choose export sequence</p>
+                        <RadioGroup 
+                            className="radio-group"
+                            name="fullTransfer"
+                            value={ full }
+                            onChange={ () => setFull(prev => !prev) }
+                        >
+                            <FormControlLabel 
+                                value={ true } 
+                                control={ <Radio disabled={ activeStep!==0 } className="radio"/> } 
+                                label="Full transfer" 
+                            />
+                            <FormControlLabel 
+                                value={ false } 
+                                control={ <Radio disabled={ fullActiveStep!==0 } className="radio"/> } 
+                                label="Step-by-step transfer" 
+                            />
+                        </RadioGroup>
+                        { full &&
+                            <Stepper activeStep={ fullActiveStep } orientation="vertical">
+                            { fullTransferSteps.map((label, index) => (
+                            <Step key={ label }>
+                                <StepLabel className="subtitle">{ label }</StepLabel>
+                                <StepContent>
+                                    <div className="helper">{ getFullStepContent(index) }</div>
+                                    <div className="import">
+                                        <Button
+                                            dataTest="dhis2-uicore-button"
+                                            name="button"
+                                            type="button"
+                                            disabled={ activeStep!==0 }
+                                            onClick={ handleFullNext }
+                                        >
+                                            { fullActiveStep === fullTransferSteps.length - 1 ? 'Finish' : 'Next' }
+                                        </Button>
+                                    </div>
+                                </StepContent>
+                            </Step>
+                            ))}
+                            </Stepper>
+                        }
+                        { !full &&
+                            <Stepper activeStep={ activeStep } orientation="vertical">
+                            { transferSteps.map((label, index) => (
+                            <Step key={ label }>
+                                <StepLabel className="subtitle">{ label }</StepLabel>
+                                <StepContent>
+                                    <div className="helper">{ getStepContent(index) }</div>
+                                    <div className="import">
+                                        <Button
+                                            dataTest="dhis2-uicore-button"
+                                            name="button"
+                                            type="button"
+                                            onClick={ handleNext }
+                                        >
+                                            { activeStep === transferSteps.length - 1 ? 'Finish' : 'Next' }
+                                        </Button>
+                                    </div>
+                                </StepContent>
+                            </Step>
+                            ))}
+                            </Stepper>
+                        }
+                        { fullActiveStep === fullTransferSteps.length && <p className="p">All steps completed - you're finished</p> }
+                        { activeStep === transferSteps.length && <p className="p">All steps completed - you're finished</p> }
+                    </div>                    
                 </Card>
+                { !done && 
+                    <div>
+                        { messages.map(message => (
+                            <Card className="log">
+                                <div className="logAction" key={ message }>{ message }</div>
+                            </Card>
+                        ))}
+                    </div>
+                }
             </div>
         </div>
 

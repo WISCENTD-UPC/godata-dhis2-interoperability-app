@@ -48,9 +48,15 @@ const Form = () => {
     function handleOnChangeArray(event) {
         const { value, name } = event.target
         const query = name.split('.')
-        const pos = parseInt(query[2])
-        const oldData = formData[query[0]]
-        oldData[query[1]][0][pos] = value
+        let oldData
+        let pos
+        if (query.length === 2) {
+            oldData = [value]
+        } else {
+            pos = parseInt(query[2])
+            oldData = formData[query[0]]
+            oldData[query[1]][0][pos] = value
+        }
         setFormData(prevData => ({ 
             ...prevData,
             [query[0]] : oldData 
@@ -113,7 +119,7 @@ const Form = () => {
                         <h3>Base configuration settings</h3>
                     </div>
                     <div className="content">
-                        <p>Disease</p>
+                        <p className="p">Disease</p>
                         <input 
                             className="text-input" 
                             size="30"
@@ -121,7 +127,7 @@ const Form = () => {
                             value={ formData["disease"] }
                             onChange={ handleOnChange }
                         />
-                        <p>Dhis2 cases program</p>
+                        <p className="p">Dhis2 cases program</p>
                         <input 
                             className="text-input" 
                             size="30"
@@ -129,7 +135,7 @@ const Form = () => {
                             value={ formData["dhis2CasesProgram"] }
                             onChange={ handleOnChange }
                         />
-                        <p>Dhis2 Cases Program</p>
+                        <p className="p">Dhis2 Cases Program</p>
                         <input 
                             className="text-input" 
                             size="30"
@@ -137,7 +143,7 @@ const Form = () => {
                             value={ formData["dhis2ContactsProgram"] }
                             onChange={ handleOnChange }
                         />
-                        <p>Dhis2 Contacts Relationship</p>
+                        <p className="p">Dhis2 Contacts Relationship</p>
                         <input 
                             className="text-input" 
                             size="30"
@@ -145,10 +151,10 @@ const Form = () => {
                             value={ formData["dhis2ContactsRelationship"] }
                             onChange={ handleOnChange }
                         />
-                        <p>Dhis2 Key Program Stages</p>
+                        <p className="p">Dhis2 Key Program Stages</p>
                         <span className="subtitle">Lab Request:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2KeyProgramStages.labRequest" 
                             value={ formData["dhis2KeyProgramStages"].labRequest }
@@ -157,7 +163,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Lab Results:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2KeyProgramStages.labResults" 
                             value={ formData["dhis2KeyProgramStages"].labResults }
@@ -166,16 +172,16 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Symptoms:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2KeyProgramStages.symptoms" 
                             value={ formData["dhis2KeyProgramStages"].symptoms }
                             onChange={ handleOnChange }
                         />
-                        <p>Dhis2 Key Attributes</p>
+                        <p className="p">Dhis2 Key Attributes</p>
                         <span className="subtitle">First Name:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2KeyAttributes.firstName" 
                             value={ formData["dhis2KeyAttributes"].firstName }
@@ -184,7 +190,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Surname:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2KeyAttributes.surname" 
                             value={ formData["dhis2KeyAttributes"].surname }
@@ -193,7 +199,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Sex:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2KeyAttributes.sex" 
                             value={ formData["dhis2KeyAttributes"].sex }
@@ -202,7 +208,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Date of birth:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2KeyAttributes.dateOfBirth" 
                             value={ formData["dhis2KeyAttributes"].dateOfBirth }
@@ -211,29 +217,29 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Home Address:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2KeyAttributes.address" 
                             value={ formData["dhis2KeyAttributes"].address }
                             onChange={ handleOnChange }
                         />
-                        <p>Dhis2 Data Elements Checks</p>
+                        <p className="p">Dhis2 Data Elements Checks</p>
                         <span className="subtitle">Confirmed test:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2DataElementsChecks.confirmedTest.0" 
                             value={ formData["dhis2DataElementsChecks"].confirmedTest[0][0] }
                             onChange={ handleOnChangeArray }
                         />
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="dhis2DataElementsChecks.confirmedTest.1" 
                             value={ formData["dhis2DataElementsChecks"].confirmedTest[0][1] }
                             onChange={ handleOnChangeArray }
                         />
-                        <p>Outbreak Creation Mode</p>
+                        <p className="p">Outbreak Creation Mode</p>
                         <RadioGroup 
                             className="radio-group"
                             name="outbreakCreationMode"
@@ -247,10 +253,10 @@ const Form = () => {
                         <div className="helper-text">EXPAND mode creates one outbreak for each organisation unit with tracked entities</div>
                         { showOutbreakGroupingLevel &&
                         <div>
-                            <p>Outbreak Creation Grouping Level</p>
+                            <p className="p">Outbreak Creation Grouping Level</p>
                             <span className="subtitle">Grouping level:</span>
                             <input 
-                                className="text-input-group" 
+                                className="text-input" 
                                 size="1"
                                 type="number"
                                 min="0"
@@ -260,10 +266,10 @@ const Form = () => {
                             
                             />
                         </div> }
-                        <p>Outbreak Configuration</p>
+                        <p className="p">Outbreak Configuration</p>
                         <span className="subtitle">Period follow-up:</span>
                         <input 
-                            className="text-input-group"
+                            className="text-input"
                             size="1"
                             type="number"
                             min="0"
@@ -275,7 +281,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Frequency of follow-up per day:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="1"
                             type="number"
                             min="0"
@@ -286,7 +292,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Number of days among known contacts:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="1"
                             type="number"
                             min="0"
@@ -297,7 +303,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Number of days in known transmission chains:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="1"
                             type="number"
                             min="0"
@@ -308,7 +314,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Number of days not seen:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="1"
                             type="number"
                             min="0"
@@ -319,7 +325,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Number less than X contacts:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="1"
                             type="number"
                             min="0"
@@ -330,7 +336,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">No days new contacts:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="1"
                             type="number"
                             min="0"
@@ -341,7 +347,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Reporting Geoprahical Level Id:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="1"
                             type="number"
                             min="0"
@@ -352,7 +358,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Case Id Mask:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="outbreakConfig.caseIdMask" 
                             value={ formData["outbreakConfig"].caseIdMask }
@@ -361,7 +367,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Contact Id Mask:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="outbreakConfig.contactIdMask" 
                             value={ formData["outbreakConfig"].contactIdMask }
@@ -370,7 +376,7 @@ const Form = () => {
                         <br />
                         <span className="subtitle">Long periods between case onset:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="1"
                             type="number"
                             min="0"
@@ -422,7 +428,22 @@ const Form = () => {
                             <FormControlLabel value={ true } control={ <Radio className="radio"/> } label="Yes" />
                             <FormControlLabel value={ false } control={ <Radio className="radio"/> } label="No" />
                         </RadioGroup>
-                        
+                        <p className="p">Countries</p>
+                        <input 
+                            className="text-input" 
+                            size="30"
+                            name="countries.0" 
+                            value={ formData["countries"][0] }
+                            onChange={ handleOnChangeArray }
+                        />
+                        <p className="p">Root ID</p>
+                        <input 
+                            className="text-input" 
+                            size="30"
+                            name="rootID" 
+                            value={ formData["rootID"] }
+                            onChange={ handleOnChange }
+                        />
                     </div>
                     <div className="import">
                         <Button

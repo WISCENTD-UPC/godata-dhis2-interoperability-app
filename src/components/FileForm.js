@@ -23,7 +23,7 @@ const FileForm = () => {
             getInstance()
             .then(d2 => {
                 d2.dataStore.get("interoperability")
-                    .then(namespace => namespace.set("config", formData))
+                    .then(namespace => namespace.set("cred-config", formData))
             })
             setUploaded(true)
         } else {
@@ -91,10 +91,10 @@ const FileForm = () => {
                         <h3>Import credentials</h3>
                     </div>
                     <div className="content">
-                    <p>GoData API Configuration</p>
+                    <p className="p">GoData API Configuration</p>
                         <span className="subtitle">BaseURL:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="30"
                             name="GoDataAPIConfig.baseURL" 
                             value={ formData["GoDataAPIConfig"].baseURL }
@@ -103,7 +103,7 @@ const FileForm = () => {
                         <br />
                         <span className="subtitle">Email:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="GoDataAPIConfig.credentials.email" 
                             value={ formData["GoDataAPIConfig"].credentials.email }
@@ -112,7 +112,7 @@ const FileForm = () => {
                         <br />
                         <span className="subtitle">Password:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             type={ show1 ? "text" : "password" }
                             size="15"
                             name="GoDataAPIConfig.credentials.password" 
@@ -127,10 +127,10 @@ const FileForm = () => {
                         >
                             { show1 ? <Visibility /> : <VisibilityOff /> }
                         </IconButton>
-                        <p>Dhis2 API Configuration</p>
+                        <p className="p">Dhis2 API Configuration</p>
                         <span className="subtitle">BaseURL:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="30"
                             name="DHIS2APIConfig.baseURL" 
                             value={ formData["DHIS2APIConfig"].baseURL }
@@ -139,7 +139,7 @@ const FileForm = () => {
                         <br />
                         <span className="subtitle">User:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             size="15"
                             name="DHIS2APIConfig.credentials.user" 
                             value={ formData["DHIS2APIConfig"].credentials.user }
@@ -148,7 +148,7 @@ const FileForm = () => {
                         <br />
                         <span className="subtitle">Password:</span>
                         <input 
-                            className="text-input-group" 
+                            className="text-input" 
                             type={ show2 ? "text" : "password" }
                             size="15"
                             name="DHIS2APIConfig.credentials.password" 
@@ -163,22 +163,6 @@ const FileForm = () => {
                         >
                             { show2 ? <Visibility /> : <VisibilityOff /> }
                         </IconButton>
-                        <p>Countries</p>
-                        <input 
-                            className="text-input-group" 
-                            size="30"
-                            name="countries" 
-                            value={ formData["countries"][0] }
-                            onChange={ handleOnChange }
-                        />
-                        <p>Root ID</p>
-                        <input 
-                            className="text-input-group" 
-                            size="30"
-                            name="rootID" 
-                            value={ formData["rootID"] }
-                            onChange={ handleOnChange }
-                        />
                     </div>
                     <div className="import">
                         <Button

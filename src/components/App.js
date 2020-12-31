@@ -4,7 +4,7 @@ import { LoadingProvider } from 'd2-ui-components'
 import OldMuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import muiThemeLegacy from './themes/dhis2-legacy.theme'
 import { muiTheme } from './themes/dhis2.theme'
-import { DataProvider } from '@dhis2/app-runtime'
+import { Provider } from '@dhis2/app-runtime'
 import Header from './Header'
 import Main from './Main'
 
@@ -12,7 +12,7 @@ import Main from './Main'
 const App = ({ config, appName }) => {
 
     return (
-        <DataProvider config={ config }>
+        <Provider config={ config }>
             <MuiThemeProvider theme={ muiTheme }>
                 <OldMuiThemeProvider muiTheme={ muiThemeLegacy }>
                     <LoadingProvider>
@@ -21,7 +21,7 @@ const App = ({ config, appName }) => {
                     </LoadingProvider>
                 </OldMuiThemeProvider>
             </MuiThemeProvider>
-        </DataProvider>
+        </Provider>
     )
 }
 

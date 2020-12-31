@@ -8,10 +8,11 @@ const StickyHeaderBar = styled(HeaderBar)`
     width: 100%;
     z-index: 1000;
     top: 0;
+    color: white;
 `
 
-const Header = (appName) => (
-    <StickyHeaderBar appName= { appName } />
+const Header = (props) => (
+    <StickyHeaderBar appName= { props.appName } />
 )
 
 Header.propTypes = {

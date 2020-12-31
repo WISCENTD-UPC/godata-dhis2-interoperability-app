@@ -1,0 +1,25 @@
+.helper {
+    font-size: 14px;
+}
+.MuiStepIcon-root.MuiStepIcon-completed {
+	color: #1c63a8 !important;
+}
+
+.MuiStepIcon-root.MuiStepIcon-active {
+	color: #1c63a8 !important;
+}
+
+.MuiStepLabel-label.MuiStepLabel-completed {
+	font-family: inherit;
+}
+
+.logAction {
+	margin-right: 10px;
+	font-weight: 500;
+	font-size: 12px;
+}
+
+.log {
+	height: 50px !important;
+}
+

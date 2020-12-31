@@ -9,14 +9,12 @@ import 'typeface-roboto'
 
 const baseUrl = process.env.REACT_APP_DHIS2_BASE_URL
 const appName = process.env.REACT_APP_DHIS2_APP_NAME
-const apiVersion = parseInt(process.env.REACT_APP_DHIS2_API_VERSION, 10)
+const apiVersion = process.env.REACT_APP_DHIS2_API_VERSION
 
 const config = {
   baseUrl: baseUrl,
   apiVersion: apiVersion
 }
-
-console.log(process.env.NODE_ENV)
 
 init({ baseUrl: baseUrl + '/api/' })
   .then(d2 => {
@@ -26,7 +24,6 @@ init({ baseUrl: baseUrl + '/api/' })
           namespace.set('isOk', true)
         })
     }
-    return d2.dataStore.get("interoperability")
   })
 
 ReactDOM.render(

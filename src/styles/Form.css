@@ -26,20 +26,6 @@
     margin-bottom: 10px;
 }
 
-.text-input-group {
-    background-color: transparent;
-    color: black;
-    outline: none;
-    outline-style: none;
-    outline-offset: 0;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: solid rgb(189, 189, 189) 1px;
-    padding: 3px 10px;
-    margin-bottom: 5px;
-}
-
 .text-input:focus {
     border-bottom: solid rgb(33, 150, 243) 2px;
 }

@@ -45,7 +45,7 @@ h3 {
     height: auto !important;
 }
 
-p {
+.p {
     font-weight: 600;
     font-size: 13px;
     margin: 5px;
