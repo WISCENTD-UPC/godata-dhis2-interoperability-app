@@ -3,6 +3,7 @@ import { getInstance } from 'd2'
 import { Button, Card } from '@dhis2/ui-core'
 import { Radio, RadioGroup, FormControlLabel, Stepper, Step, StepLabel, StepContent } from '@material-ui/core'
 import StorageIcon from '@material-ui/icons/Storage'
+import DoneIcon from '@material-ui/icons/Done'
 import { mergeAll } from 'ramda'
 import DHIS2API from 'dhis2-api-wrapper'
 import GoDataAPI from 'godata-api-wrapper'
@@ -40,21 +41,27 @@ const Actions = () => {
         initInstances()
     }, [])
 
-    const logAction = (message) => setMessages(prevArray => [...prevArray, message])
+    const logAction = (message) => setMessages(prevArray => [...prevArray, { text: message, done: false }])
+    const logDone = () => setMessages(prevArray => {
+        const newArray = [...prevArray]
+        newArray[newArray.length - 1].done = true
+        return newArray
+    })
     
     const handleFullNext = () => {
         async function action() {
             switch(fullActiveStep) {
                 case 0: 
-                    await copyOrganisationUnits(dhis2, godata, config, { logAction: logAction })()
+                    await copyOrganisationUnits(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 1: 
-                    await fullTransfer(dhis2, godata, config, { logAction: logAction })()
+                    await fullTransfer(dhis2, godata, config, { logAction, logDone })()
                     setDone(true)
                     break
                 default: break
             }
         }
+        setMessages([])
         action()
         setFullActiveStep(prev => prev + 1)
     }
@@ -62,21 +69,22 @@ const Actions = () => {
         async function action() {
             switch(activeStep) {
                 case 0: 
-                    await copyOrganisationUnits(dhis2, godata, config, { logAction: logAction })()
+                    await copyOrganisationUnits(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 1: 
-                    createOutbreaks(dhis2, godata, config, { logAction: logAction })()
+                    await createOutbreaks(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 2: 
-                    copyCases(dhis2, godata, config, { logAction: logAction })()
+                    await copyCases(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 3: 
-                    copyContacts(dhis2, godata, config, { logAction: logAction })()
+                    await copyContacts(dhis2, godata, config, { logAction, logDone })()
                     setDone(true)
                     break
                 default: break
             }
         }
+        setMessages([])
         action()
         setActiveStep(prev => prev + 1)
     }
@@ -87,7 +95,7 @@ const Actions = () => {
                 <Card className="card" dataTest="dhis2-uicore-card">
                     <div className="title-icon">
                         <StorageIcon />
-                        <h3>Base configuration settings</h3>
+                        <h3>Export data and metadata</h3>
                     </div>
                     <div className="content">
                         <p className="p">Choose export sequence</p>
@@ -112,7 +120,7 @@ const Actions = () => {
                             <Stepper activeStep={ fullActiveStep } orientation="vertical">
                             { fullTransferSteps.map((label, index) => (
                             <Step key={ label }>
-                                <StepLabel className="subtitle">{ label }</StepLabel>
+                                <StepLabel>{ label }</StepLabel>
                                 <StepContent>
                                     <div className="helper">{ getFullStepContent(index) }</div>
                                     <div className="import">
@@ -135,7 +143,7 @@ const Actions = () => {
                             <Stepper activeStep={ activeStep } orientation="vertical">
                             { transferSteps.map((label, index) => (
                             <Step key={ label }>
-                                <StepLabel className="subtitle">{ label }</StepLabel>
+                                <StepLabel>{ label }</StepLabel>
                                 <StepContent>
                                     <div className="helper">{ getStepContent(index) }</div>
                                     <div className="import">
@@ -153,18 +161,24 @@ const Actions = () => {
                             ))}
                             </Stepper>
                         }
-                        { fullActiveStep === fullTransferSteps.length && <p className="p">All steps completed - you're finished</p> }
-                        { activeStep === transferSteps.length && <p className="p">All steps completed - you're finished</p> }
                     </div>                    
                 </Card>
-                { !done && 
-                    <div>
-                        { messages.map(message => (
-                            <Card className="log">
-                                <div className="logAction" key={ message }>{ message }</div>
-                            </Card>
-                        ))}
-                    </div>
+                <div>
+                    { messages.map(message => (
+                        <Card className="log">
+                            <div className="title-icon" key={ message }>
+                                <div className="logAction">{ message.text+"..." }</div>
+                                { message.done && <DoneIcon /> }
+                            </div>
+                        </Card>
+                    ))}
+                
+                </div>
+                
+                { done && 
+                    <Card className="log">
+                        <p className="p">All steps completed - you're finished</p>
+                    </Card>
                 }
             </div>
         </div>

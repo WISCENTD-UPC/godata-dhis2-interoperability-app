@@ -151,7 +151,7 @@ const Form = () => {
                             value={ formData["dhis2CasesProgram"] }
                             onChange={ handleOnChange }
                         />
-                        <p className="p">Dhis2 Cases Program</p>
+                        <p className="p">Dhis2 Contacts Program</p>
                         <input 
                             className="text-input" 
                             size="30"

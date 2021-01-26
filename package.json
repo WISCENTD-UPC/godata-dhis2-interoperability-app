@@ -1,6 +1,7 @@
 {
   "name": "interoperability-app",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "description": "Simple DHIS2 app to allow interoperability between DHIS2 and GoData instances",
   "developer": {

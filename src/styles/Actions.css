@@ -14,12 +14,27 @@
 }
 
 .logAction {
-	margin-right: 10px;
+	display: flex;
+	align-content: center;
+	margin-left: 10px;
+	margin-right: 15px;
 	font-weight: 500;
-	font-size: 12px;
+	font-size: 14px;
+}
+.logAction svg {
+	margin-left: 5px;
 }
 
 .log {
 	height: 50px !important;
+}
+
+.MuiStepLabel-label.MuiStepLabel-active {
+	font-family: inherit;
+}
+
+.MuiStepLabel-label {
+	font-family: inherit;
+	font-weight: 500;
 }
 
