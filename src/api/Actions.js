@@ -75,9 +75,11 @@ const Actions = () => {
                     await createOutbreaks(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 2: 
+                    await godata.login()
                     await copyCases(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 3: 
+                    await godata.login()
                     await copyContacts(dhis2, godata, config, { logAction, logDone })()
                     setDone(true)
                     break
