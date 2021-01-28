@@ -26,7 +26,7 @@ DHIS2 basic app to allow interoperability between DHIS2 and Go.Data instances
 + **Base configuration settings**: To adapt the process to a specific DHIS2 structure, configurable parameters settings must be provided. There are also additional parameters related to outbreak creation and configuration. Once the form is submitted, the information will be saved on the DHIS2 Data Store.
 
 <p align="center">
-    <img src="./images/base-config.png" width="700">
+    <img src="./images/base-config.png" width="600">
 </p>
 
 + **Export data and metadata**: There are two possible import sequences. Both ways are equivalent, the only difference is that the *Full transfer* sequence groups *Create outbreaks*, *Copy cases* and *Copy contacts* all in one step. 
@@ -38,6 +38,5 @@ DHIS2 basic app to allow interoperability between DHIS2 and Go.Data instances
     Once this file has been correctly imported, carry on with the next steps. Before moving on to the next step, all the pop-up messages have to be checked as done (✓).
 
 <p align="center">
-    <img src="./images/full-transfer.png" width=600>
     <img src="./images/step-by-step.png" width=600>
 </p>
