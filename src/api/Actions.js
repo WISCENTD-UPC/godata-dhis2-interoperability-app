@@ -72,13 +72,17 @@ const Actions = () => {
                     await copyOrganisationUnits(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 1: 
-                    await createOutbreaks(dhis2, godata, config, { logAction, logDone })()
+                    await copyMetadata(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 2: 
                     await godata.login()
-                    await copyCases(dhis2, godata, config, { logAction, logDone })()
+                    await createOutbreaks(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 3: 
+                    await godata.login()
+                    await copyCases(dhis2, godata, config, { logAction, logDone })()
+                    break
+                case 4: 
                     await godata.login()
                     await copyContacts(dhis2, godata, config, { logAction, logDone })()
                     setDone(true)
@@ -179,7 +183,8 @@ const Actions = () => {
                 
                 { done && 
                     <Card className="log">
-                        <p className="p">All steps completed - you're finished</p>
+                        <p className="p">
+                            <span>All steps completed - you're finished</span></p>
                     </Card>
                 }
             </div>

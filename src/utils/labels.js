@@ -14,7 +14,7 @@ function getFullStepContent(step) {
 }
 
 function getSteps() {
-    return ['Copy Organisation Units', 'Create outbreaks', 'Copy cases', 'Copy contacts']
+    return ['Copy Organisation Units', 'Copy Metadata', 'Create outbreaks', 'Copy cases', 'Copy contacts']
 }
   
 function getStepContent(step) {
@@ -22,10 +22,12 @@ function getStepContent(step) {
         case 0:
             return "Get all organisation units from DHIS2, transforms them to fit Go.Data's schema and saves them hierarchally in a json file that needs to be downloaded."
         case 1:
-            return "Create Go.Data outbreaks based on the organisation units and tracked entities of the DHIS2 instance."
+            return "Copy DHIS2 metadata into Go.Data."
         case 2:
-            return "Transfer tracked entities from DHIS2 to Go.Data, transforming the data to fit Go.Data's schema and assigning an outbreak automatically."
+            return "Create Go.Data outbreaks based on the organisation units and tracked entities of the DHIS2 instance."
         case 3:
+            return "Transfer tracked entities from DHIS2 to Go.Data, transforming the data to fit Go.Data's schema and assigning an outbreak automatically."
+        case 4:
             return "Transfer contacts from DHIS2 to Go.Data, adding aditional persons and the relationships among them."    
         default:
             return "Unknown step"
