@@ -33,6 +33,7 @@ h3 {
     width: 80px;
     opacity: 1;
     transition: 0.3s;
+    margin: 5px;
 }
 
 .import button:hover {opacity: 0.6;}

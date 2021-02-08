@@ -29,7 +29,7 @@ DHIS2 basic app to allow interoperability between DHIS2 and Go.Data instances
     <img src="./images/base-config.png" width="600">
 </p>
 
-+ **Export data and metadata**: There are two possible import sequences. Both ways are equivalent, the only difference is that the *Full transfer* sequence groups *Copy Metadata*, *Create outbreaks*, *Copy cases* and *Copy contacts* all in one step. 
++ **Export data and metadata**: There are two possible export sequences. Both ways are equivalent, the only difference is that the *Full transfer* sequence groups *Copy Metadata*, *Create outbreaks*, *Copy cases* and *Copy contacts* all in one step. 
     + Copy Organisation Units: At the end of this step, a pop-up window will appear to download the orgUnits `.json`. This file needs to be saved on the computer and imported on the Go.Data instance following the path: <br />
     `Go.Data → Locations → Quick Actions → Import hierarchical locations → Choose file (organisation-units.json) → Import`    
 

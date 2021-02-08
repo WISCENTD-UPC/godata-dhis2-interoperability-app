@@ -70,7 +70,7 @@
     "48": "favicon-48x48.png"
   },
   "manifest.webapp": {
-    "name": "Interoperability App",
+    "name": "Go.Data-DHIS2 Interoperability App",
     "description": "Interoperability between DHIS2 and GoData",
     "appType": "APP",
     "activities": {

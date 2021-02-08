@@ -17,10 +17,15 @@ const Actions = () => {
     const [godata, setGoData] = useState(null)
     
     const [full, setFull] = useState(true)
-    const [fullActiveStep, setFullActiveStep] = useState(0);
-    const fullTransferSteps = getFullSteps();
-    const [activeStep, setActiveStep] = useState(0);
-    const transferSteps = getSteps();
+    const [fullActiveStep, setFullActiveStep] = useState(0)
+    const fullTransferSteps = getFullSteps()
+    const [activeStep, setActiveStep] = useState(0)
+    const transferSteps = getSteps()
+
+    const [fullSkipped, setFullSkipped] = useState(new Set())
+    const [skipped, setSkipped] = useState(new Set())
+    const [fullCompleted, setFullCompleted] = useState(new Set())
+    const [completed, setCompleted] = useState(new Set())
 
     const [done, setDone] = useState(false)
     const [messages, setMessages] = useState([])
@@ -47,6 +52,35 @@ const Actions = () => {
         newArray[newArray.length - 1].done = true
         return newArray
     })
+
+    const handleFullSkip = () => {
+        setFullActiveStep(prev => prev + 1)
+        setFullSkipped((prevSkipped) => {
+            const newSkipped = new Set(prevSkipped.values())
+            newSkipped.add(fullActiveStep)
+            if (newSkipped.size + fullCompleted.size === fullTransferSteps.length) { setDone(true) }
+            return newSkipped
+        })
+        
+    }
+
+    const handleSkip = () => {
+        setActiveStep(prev => prev + 1)
+        setSkipped(prevSkipped => {
+            const newSkipped = new Set(prevSkipped.values())
+            newSkipped.add(activeStep)
+            if (newSkipped.size + completed.size === transferSteps.length) { setDone(true) }
+            return newSkipped
+        })
+    }
+
+    const isFullStepSkipped = (step) => {
+        return fullSkipped.has(step)
+    }
+
+    const isStepSkipped = (step) => {
+        return skipped.has(step)
+    } 
     
     const handleFullNext = () => {
         async function action() {
@@ -64,6 +98,11 @@ const Actions = () => {
         setMessages([])
         action()
         setFullActiveStep(prev => prev + 1)
+        setFullCompleted(prev => {
+            const newCompleted = new Set(prev.values())
+            newCompleted.add(fullActiveStep)
+            return newCompleted
+        })
     }
     const handleNext = () => {
         async function action() {
@@ -93,6 +132,11 @@ const Actions = () => {
         setMessages([])
         action()
         setActiveStep(prev => prev + 1)
+        setCompleted(prev => {
+            const newCompleted = new Set(prev.values())
+            newCompleted.add(activeStep)
+            return newCompleted
+        })
     }
 
     return (
@@ -124,47 +168,76 @@ const Actions = () => {
                         </RadioGroup>
                         { full &&
                             <Stepper activeStep={ fullActiveStep } orientation="vertical">
-                            { fullTransferSteps.map((label, index) => (
-                            <Step key={ label }>
-                                <StepLabel>{ label }</StepLabel>
-                                <StepContent>
-                                    <div className="helper">{ getFullStepContent(index) }</div>
-                                    <div className="import">
-                                        <Button
-                                            dataTest="dhis2-uicore-button"
-                                            name="button"
-                                            type="button"
-                                            disabled={ activeStep!==0 }
-                                            onClick={ handleFullNext }
-                                        >
-                                            { fullActiveStep === fullTransferSteps.length - 1 ? 'Finish' : 'Next' }
-                                        </Button>
-                                    </div>
-                                </StepContent>
-                            </Step>
-                            ))}
+                            { fullTransferSteps.map((label, index) => {
+                                const stepProps = {}
+                                if (isFullStepSkipped(index)) {
+                                    stepProps.completed = false
+                                }
+                                return (
+                                    <Step key={ label }{...stepProps}>
+                                        <StepLabel>{ label }</StepLabel>
+                                        <StepContent>
+                                            <div className="helper">{ getFullStepContent(index) }</div>
+                                            <div className="import">
+                                                <Button
+                                                    dataTest="dhis2-uicore-button"
+                                                    name="button"
+                                                    type="button"
+                                                    disabled={ activeStep!==0 }
+                                                    onClick={ handleFullNext }
+                                                >
+                                                    Complete
+                                                </Button>
+                                                <Button
+                                                    dataTest="dhis2-uicore-button"
+                                                    name="button"
+                                                    type="button"
+                                                    disabled={ activeStep!==0 }
+                                                    onClick={ handleFullSkip }
+                                                >
+                                                    Skip
+                                                </Button>
+                                            </div>
+                                        </StepContent>
+                                    </Step>
+                                )
+                            })}
                             </Stepper>
                         }
                         { !full &&
                             <Stepper activeStep={ activeStep } orientation="vertical">
-                            { transferSteps.map((label, index) => (
-                            <Step key={ label }>
-                                <StepLabel>{ label }</StepLabel>
-                                <StepContent>
-                                    <div className="helper">{ getStepContent(index) }</div>
-                                    <div className="import">
-                                        <Button
-                                            dataTest="dhis2-uicore-button"
-                                            name="button"
-                                            type="button"
-                                            onClick={ handleNext }
-                                        >
-                                            { activeStep === transferSteps.length - 1 ? 'Finish' : 'Next' }
-                                        </Button>
-                                    </div>
-                                </StepContent>
-                            </Step>
-                            ))}
+                            { transferSteps.map((label, index) => {
+                                const stepProps = {}
+                                if (isStepSkipped(index)) {
+                                    stepProps.completed = false
+                                }
+                                return (
+                                    <Step key={ label }{...stepProps} >
+                                        <StepLabel>{ label }</StepLabel>
+                                        <StepContent>
+                                            <div className="helper">{ getStepContent(index) }</div>
+                                            <div className="import">
+                                                <Button
+                                                    dataTest="dhis2-uicore-button"
+                                                    name="button"
+                                                    type="button"
+                                                    onClick={ handleNext }
+                                                >
+                                                    Complete
+                                                </Button>
+                                                <Button
+                                                    dataTest="dhis2-uicore-button"
+                                                    name="button"
+                                                    type="button"
+                                                    onClick={ handleSkip }
+                                                >
+                                                    Skip
+                                                </Button>
+                                            </div>
+                                        </StepContent>
+                                    </Step>
+                                )
+                            })}    
                             </Stepper>
                         }
                     </div>                    
@@ -183,8 +256,9 @@ const Actions = () => {
                 
                 { done && 
                     <Card className="log">
-                        <p className="p">
-                            <span>All steps completed - you're finished</span></p>
+                        <p className="title-icon">
+                            <span className="p">All steps completed - you're finished</span>
+                        </p>
                     </Card>
                 }
             </div>
