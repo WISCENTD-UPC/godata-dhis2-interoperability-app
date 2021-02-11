@@ -34,3 +34,8 @@ DHIS2 basic app to allow interoperability between DHIS2 and Go.Data instances
 <p align="center">
     <img src="./images/step-by-step.png" width=600>
 </p>
+
+## Demo
+Here there is a short demo of how this interoperability app between a DHIS2 and a Go.Data instance works:
+
+[![Demo](./images/intro.png)](https://www.essi.upc.edu/~petar/videos/demo.mp4)
