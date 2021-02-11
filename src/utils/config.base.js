@@ -19,6 +19,9 @@ const config = {
     address: 'Home Address',
     passport: 'Passport Number'
   },
+  attributesDefaults: {
+    firstName: 'NOT_PROVIDED'
+  },
   dhis2KeyDataElements: {
     pregnancy: 'Pregnancy',
     dateOfOnset: 'Date of symptoms onset',

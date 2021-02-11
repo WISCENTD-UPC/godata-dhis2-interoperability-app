@@ -1,4 +1,4 @@
-## interoperability-app
+## Go.Data-DHIS2 Interoperability App
 DHIS2 basic app to allow interoperability between DHIS2 and Go.Data instances
 ![Architecture summary](./images/overview.png)
 

@@ -275,6 +275,15 @@ const Form = () => {
                             value={ formData["dhis2KeyAttributes"].passport }
                             onChange={ handleOnChange }
                         />
+                        <p className="p">Default attributes</p>
+                        <span className="subtitle">First Name:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="attributesDefaults.firstName" 
+                            value={ formData["attributesDefaults"].firstName }
+                            onChange={ handleOnChange }
+                        />
                         <p className="p">Dhis2 Key Data Elements</p>
                         <span className="subtitle">Pregnancy:</span>
                         <input 
