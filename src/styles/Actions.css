@@ -1,0 +1,36 @@
+.helper {
+    font-size: 14px;
+}
+.MuiStepIcon-root.MuiStepIcon-completed {
+	color: #1c63a8 !important;
+}
+
+.MuiStepIcon-root.MuiStepIcon-active {
+	color: #1c63a8 !important;
+}
+
+.MuiStepLabel-label.MuiStepLabel-completed {
+	font-family: inherit;
+}
+
+.logAction {
+	margin-right: 15px;
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.log {
+	height: 50px !important;
+	display: flex !important;
+	align-items: center;
+}
+
+.MuiStepLabel-label.MuiStepLabel-active {
+	font-family: inherit;
+}
+
+.MuiStepLabel-label {
+	font-family: inherit;
+	font-weight: 500;
+}
+
