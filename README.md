@@ -4,7 +4,7 @@ DHIS2 basic app to allow interoperability between DHIS2 and Go.Data instances
 
 ## Installation
 
-+ Download the app.zip file <a href="https://github.com/WISCENTD-UPC/godata-dhis2-interoperability-app/files/5965231/app.zip">here</a>.
++ Download the app.zip file <a href="https://github.com/WISCENTD-UPC/godata-dhis2-interoperability-app/files/5990041/app.zip">here</a>.
 + Go to the *App Management* app inside your DHIS2 instance and upload the .zip file.
 
 ![App Management DHIS2](./images/app-management.png)
