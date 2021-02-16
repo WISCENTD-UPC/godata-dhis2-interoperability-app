@@ -16,11 +16,17 @@ const Form = () => {
     const showOutbreakGroupingLevel = formData.outbreakCreationMode===0
     
     function onFormSubmit() {
-        getInstance()
-        .then(d2 => {
-            d2.dataStore.get("interoperability")
-                .then(namespace => namespace.set("base-config", formData))
-        })
+        async function submit() {
+            const d2 = await getInstance()
+            if(await d2.dataStore.has("interoperability")) {
+                const namespace = await d2.dataStore.get("interoperability")
+                await namespace.set("base-config", formData)
+            } else {
+                const namespace = await d2.dataStore.create("interoperability")
+                await namespace.set("base-config", formData)
+            }
+        }
+        submit()
         setUploaded(true)
     }
 

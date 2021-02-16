@@ -6,11 +6,12 @@ import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import i18n from '@dhis2/d2-i18n' //do translations!
 import { getInstance } from 'd2'
+import _ from 'lodash'
 import '../styles/FileForm.css'
 import config from '../utils/config'
 
 
-const FileForm = () => {
+const FileForm = ({ cryptr }) => {
     const [formData, setFormData] = useState(config)
     const [isOk, setOk] = useState(true)
     const [isUploaded, setUploaded] = useState(false)
@@ -19,12 +20,26 @@ const FileForm = () => {
     const [show2, setShow2] = useState(false)
     
     function onFormSubmit() {
+
+        async function submit(data) {
+            const d2 = await getInstance()
+            if(await d2.currentUser.dataStore.has("interoperability")) {
+                const namespace = await d2.currentUser.dataStore.get("interoperability")
+                await namespace.set("cred-config", data)
+            } else {
+                const namespace = await d2.currentUser.dataStore.create("interoperability")
+                await namespace.set("cred-config", data)
+            }
+        }
+
         if (isOk === true) {
-            getInstance()
-            .then(d2 => {
-                d2.dataStore.get("interoperability")
-                    .then(namespace => namespace.set("cred-config", formData))
-            })
+            const conf = _.cloneDeep(formData)
+            const godataPass =  formData.GoDataAPIConfig.credentials.password
+            const dhis2Pass = formData.DHIS2APIConfig.credentials.password
+
+            conf.GoDataAPIConfig.credentials.password = cryptr.encrypt(godataPass)
+            conf.DHIS2APIConfig.credentials.password = cryptr.encrypt(dhis2Pass)
+            submit(conf)
             setUploaded(true)
         } else {
             setWrong(true)

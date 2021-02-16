@@ -4,20 +4,24 @@ import {
   Switch,
   Route,
 } from 'react-router-dom'
+import Cryptr from 'cryptr'
 import FileForm from './FileForm'
 import Form from './Form'
 import SideBar from './SideBar'
 import Actions from '../api/Actions'
 
-const Main = () => (
-  <Router>
-      <SideBar />
-      <Switch>
-        <Route exact path="/credentials" component={ FileForm }/>
-        <Route exact path="/settings" component={ Form }/>
-        <Route exact path="/export" component={ Actions }/>
-      </Switch>
-  </Router>
-)
+const Main = () => {
+  const cryptr = new Cryptr(process.env.REACT_APP_SECRET_KEY)
+  return (
+    <Router>
+        <SideBar />
+        <Switch>
+          <Route exact path="/credentials" render={ () => <FileForm cryptr={ cryptr }/> }/>
+          <Route exact path="/settings" component={ Form }/>
+          <Route exact path="/export" render={ () => <Actions cryptr={ cryptr }/> }/>
+        </Switch>
+    </Router>
+  )
+}
 
 export default Main

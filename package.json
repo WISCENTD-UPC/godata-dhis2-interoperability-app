@@ -21,11 +21,15 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.21.1",
+    "cryptr": "^6.0.2",
     "d2": "^31.8.2",
     "d2-ui-components": "^2.2.0",
     "dhis2-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-api-wrapper.git#develop",
     "dhis2-godata-interoperability": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-godata-interoperability.git#develop",
+    "dotenv": "^8.2.0",
     "godata-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/godata-api-wrapper.git#develop",
+    "lodash": "^4.17.20",
     "ramda": "^0.27.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -64,11 +68,6 @@
       "last 1 safari version"
     ]
   },
-  "icons": {
-    "16": "favicon-16x16.png",
-    "32": "favicon-32x32.png",
-    "48": "favicon-48x48.png"
-  },
   "manifest.webapp": {
     "name": "Go.Data-DHIS2 Interoperability App",
     "description": "Interoperability between DHIS2 and GoData",
@@ -77,6 +76,9 @@
       "dhis": {
         "href": "*"
       }
+    },
+    "icons": {
+      "48": "favicon-48x48.png"
     }
   }
 }
