@@ -14,12 +14,14 @@ const Main = () => {
   const cryptr = new Cryptr(process.env.REACT_APP_SECRET_KEY)
   return (
     <Router>
-        <SideBar />
-        <Switch>
-          <Route exact path="/credentials" render={ () => <FileForm cryptr={ cryptr }/> }/>
-          <Route exact path="/settings" component={ Form }/>
-          <Route exact path="/export" render={ () => <Actions cryptr={ cryptr }/> }/>
-        </Switch>
+        <div className="layout-container">
+          <SideBar />
+          <Switch>
+            <Route exact path="/credentials" render={ () => <FileForm cryptr={ cryptr }/> }/>
+            <Route exact path="/settings" component={ Form }/>
+            <Route exact path="/export" render={ () => <Actions cryptr={ cryptr }/> }/>
+          </Switch>
+        </div>
     </Router>
   )
 }
