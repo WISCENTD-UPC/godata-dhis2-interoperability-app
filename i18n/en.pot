@@ -5,11 +5,35 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2020-11-26T09:36:46.653Z\n"
-"PO-Revision-Date: 2020-11-26T09:36:46.653Z\n"
+"POT-Creation-Date: 2021-02-22T17:08:03.891Z\n"
+"PO-Revision-Date: 2021-02-22T17:08:03.891Z\n"
 
-msgid "Hello {{name}}"
+msgid "Import credentials"
 msgstr ""
 
-msgid "Welcome to DHIS2!"
+msgid "GoData API Configuration"
+msgstr ""
+
+msgid "BaseURL"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Dhis2 API Configuration"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Some fields are in blank"
+msgstr ""
+
+msgid "Credentials saved correctly"
 msgstr ""

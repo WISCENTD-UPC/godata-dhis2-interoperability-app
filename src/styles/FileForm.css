@@ -11,32 +11,12 @@ h3 {
     padding: 8px 10px 6px;
 }
 
-.input button {
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    padding: 0px !important;
-    text-transform: uppercase;
-    background-color: white !important;
-    color: black !important;
-    border: none !important;
-}
-
 .import {
     padding: 10px 0 10px 16px;
 }
-.import button {  
-    font-weight: 500 !important;
-    text-transform: uppercase;
-    background-color: rgb(76, 112, 140) !important;
-    color: white !important;
-    border: none !important;
-    width: 80px;
-    opacity: 1;
-    transition: 0.3s;
+button {
     margin: 5px;
 }
-
-.import button:hover {opacity: 0.6;}
 
 .card {
     display: flex !important;
@@ -46,23 +26,15 @@ h3 {
     height: auto !important;
 }
 
-.p {
-    font-weight: 600;
-    font-size: 13px;
-    margin: 5px;
-    text-transform: uppercase;
-    color: black;
+.layout-container {
+    display: flex;
+    flex-direction: row;
 }
 
-.container {
+.content-container {
     display: flex;
-    left: 700px;
-    right: 0px;
-    top: 100px;
-    position: fixed;
-    margin-bottom: 60px;
+    padding: 16px;
     overflow-y: scroll;
-    bottom: 0px;
 }
 
 
