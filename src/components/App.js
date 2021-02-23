@@ -4,25 +4,24 @@ import { LoadingProvider } from 'd2-ui-components'
 import OldMuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import muiThemeLegacy from './themes/dhis2-legacy.theme'
 import { muiTheme } from './themes/dhis2.theme'
+import { Provider } from '@dhis2/app-runtime'
+import Header from './Header'
 import Main from './Main'
 
-import '../locales/index.js' // Required to initialize translations
-import { D2Shim } from '@dhis2/app-runtime-adapter-d2'
 
+const App = ({ config, appName }) => {
 
-const App = () => {
     return (
-        <D2Shim>
-            {() => (
-                <MuiThemeProvider theme={ muiTheme }>
-                    <OldMuiThemeProvider muiTheme={ muiThemeLegacy }>
-                        <LoadingProvider>
-                            <Main />
-                        </LoadingProvider>
-                    </OldMuiThemeProvider>
-                </MuiThemeProvider>
-            )}
-        </D2Shim>
+        <Provider config={ config }>
+            <MuiThemeProvider theme={ muiTheme }>
+                <OldMuiThemeProvider muiTheme={ muiThemeLegacy }>
+                    <LoadingProvider>
+                        <Header appName={ appName }/>
+                        <Main />
+                    </LoadingProvider>
+                </OldMuiThemeProvider>
+            </MuiThemeProvider>
+        </Provider>
     )
 }
 
