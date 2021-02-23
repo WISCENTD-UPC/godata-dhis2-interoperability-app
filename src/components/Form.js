@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
-import { AlertBar, Button, Card } from '@dhis2/ui-core'
+import { AlertBar, Button, Card } from '@dhis2/ui'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TuneIcon from '@material-ui/icons/Tune'
 import i18n from '@dhis2/d2-i18n' //do translations!
-import { getInstance } from 'd2'
 import '../styles/Form.css'
 import config from '../utils/config.base'
+import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 
 
 const Form = () => {
     const [formData, setFormData] = useState(config)
     const [isUploaded, setUploaded] = useState(false)
     const showOutbreakGroupingLevel = formData.outbreakCreationMode===0
+    const { d2 } = useD2()
     
     function onFormSubmit() {
         async function submit() {
-            const d2 = await getInstance()
             if(await d2.dataStore.has("interoperability")) {
                 const namespace = await d2.dataStore.get("interoperability")
                 await namespace.set("base-config", formData)
@@ -133,7 +133,7 @@ const Form = () => {
 
 
     return (
-        <div className="container"> 
+        <div className="content-container"> 
             <div className="card"> 
                 <Card className="card" dataTest="dhis2-uicore-card">
                     <div className="title-icon">
@@ -559,10 +559,9 @@ const Form = () => {
                     </div>
                     <div className="import">
                         <Button
-                            dataTest="dhis2-uicore-button"
+                            primary
                             name="button"
                             onClick={ onFormSubmit }
-                            type="button"
                         >
                             Import
                         </Button>

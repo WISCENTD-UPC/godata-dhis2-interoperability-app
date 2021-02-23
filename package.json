@@ -10,29 +10,25 @@
   },
   "dependencies": {
     "@dhis2/app-runtime": "^2.6.1",
+    "@dhis2/app-runtime-adapter-d2": "^1.0.2",
     "@dhis2/d2-i18n": "^1.0.6",
-    "@dhis2/ui-constants": "^5.7.8",
-    "@dhis2/ui-core": "^5.7.8",
-    "@dhis2/ui-icons": "^5.7.8",
-    "@dhis2/ui-widgets": "^5.7.8",
+    "@dhis2/ui": "^5.7.8",
     "@material-ui/core": "^4.11.1",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/styles": "^4.11.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "axios": "^0.21.1",
     "cryptr": "^6.0.2",
     "d2": "^31.8.2",
     "d2-ui-components": "^2.2.0",
     "dhis2-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-api-wrapper.git#develop",
     "dhis2-godata-interoperability": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-godata-interoperability.git#develop",
-    "dotenv": "^8.2.0",
     "godata-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/godata-api-wrapper.git#develop",
     "lodash": "^4.17.20",
     "ramda": "^0.27.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16",
+    "react-dom": "^16",
     "react-router-dom": "^5.2.0",
     "rxjs": "^6.6.3",
     "styled-components": "^5.2.1",
@@ -40,45 +36,19 @@
     "typeface-roboto": "^1.1.13"
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.6",
-    "react-scripts": "^4.0.1",
-    "d2-manifest": "1.0.0"
+    "@dhis2/cli-app-scripts": "^5.6.0",
+    "@types/react-router-dom": "^5.1.6"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && d2-manifest package.json build/manifest.webapp",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "d2-app-scripts start",
+    "build": "d2-app-scripts build",
+    "test": "d2-app-scripts test",
+    "deploy": "d2-app-scripts deploy"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "manifest.webapp": {
-    "name": "Go.Data-DHIS2 Interoperability App",
-    "description": "Interoperability between DHIS2 and GoData",
-    "appType": "APP",
-    "activities": {
-      "dhis": {
-        "href": "*"
-      }
-    },
-    "icons": {
-      "48": "favicon-48x48.png"
-    }
   }
 }

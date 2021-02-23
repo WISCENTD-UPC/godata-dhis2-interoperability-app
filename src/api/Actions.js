@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getInstance } from 'd2'
-import { Button, Card } from '@dhis2/ui-core'
+import { Button, Card } from '@dhis2/ui'
 import { Radio, RadioGroup, FormControlLabel, Stepper, Step, StepLabel, StepContent } from '@material-ui/core'
 import StorageIcon from '@material-ui/icons/Storage'
 import DoneIcon from '@material-ui/icons/Done'
@@ -11,6 +10,7 @@ import GoDataAPI from 'godata-api-wrapper'
 import { copyOrganisationUnits, fullTransfer, copyCases, createOutbreaks, copyContacts, copyMetadata } from 'dhis2-godata-interoperability'
 import '../styles/Actions.css'
 import { getFullSteps, getFullStepContent, getSteps, getStepContent } from '../utils/labels'
+import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 
 const Actions = ({ cryptr }) => {
     const [config, setConfig] = useState({})
@@ -28,9 +28,10 @@ const Actions = ({ cryptr }) => {
     const [done, setDone] = useState(false)
     const [messages, setMessages] = useState([])
 
+    const { d2 } = useD2()
+
     useEffect(() => {
         async function initInstances() {
-            const d2 = await getInstance()
             const generalNamespace = await d2.dataStore.get("interoperability")
             const userNamespace = await d2.currentUser.dataStore.get("interoperability")
             const baseConf = await generalNamespace.get("base-config")
@@ -49,8 +50,10 @@ const Actions = ({ cryptr }) => {
             setGoData(new GoDataAPI(conf.GoDataAPIConfig))
             
         }
-        initInstances()
-    }, [])
+        if (d2) {
+            initInstances()
+        }
+    }, [d2])
 
     const logAction = (message) => setMessages(prevArray => [...prevArray, { text: message, done: false }])
     const logDone = () => setMessages(prevArray => {
@@ -132,7 +135,7 @@ const Actions = ({ cryptr }) => {
     }
 
     return (
-        <div className="container"> 
+        <div className="content-container"> 
             <div className="card"> 
                 <Card className="card" dataTest="dhis2-uicore-card">
                     <div className="title-icon">
