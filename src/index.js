@@ -13,7 +13,7 @@ dotenv.config()
 const appName = process.env.REACT_APP_DHIS2_APP_NAME
 const apiVersion = process.env.REACT_APP_DHIS2_API_VERSION
 
-async function getBaseUrl() {
+export async function getBaseUrl() {
   if (process.env.NODE_ENV === "development") {
       const baseUrl = process.env.REACT_APP_DHIS2_BASE_URL || "http://localhost:8080"
       console.info(`[DEV] DHIS2 instance: ${baseUrl}`)

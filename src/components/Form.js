@@ -5,7 +5,7 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TuneIcon from '@material-ui/icons/Tune'
 import i18n from '@dhis2/d2-i18n' //do translations!
-import { getInstance } from 'd2'
+import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 import '../styles/Form.css'
 import config from '../utils/config.base'
 
@@ -14,15 +14,16 @@ const Form = () => {
     const [formData, setFormData] = useState(config)
     const [isUploaded, setUploaded] = useState(false)
     const showOutbreakGroupingLevel = formData.outbreakCreationMode===0
+
+    const { d2 } = useD2()
     
     function onFormSubmit() {
         async function submit() {
-            const d2 = await getInstance()
-            if(await d2.dataStore.has("interoperability")) {
-                const namespace = await d2.dataStore.get("interoperability")
+            if(await d2.dataStore.has("dhis-godata-interoperability")) {
+                const namespace = await d2.dataStore.get("dhis-godata-interoperability")
                 await namespace.set("base-config", formData)
             } else {
-                const namespace = await d2.dataStore.create("interoperability")
+                const namespace = await d2.dataStore.create("dhis-godata-interoperability")
                 await namespace.set("base-config", formData)
             }
         }

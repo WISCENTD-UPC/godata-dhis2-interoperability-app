@@ -22,8 +22,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
-    "cryptr": "^6.0.2",
-    "d2": "^31.8.2",
+    "d2": "31.9.0",
     "d2-ui-components": "^2.2.0",
     "dhis2-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-api-wrapper.git#develop",
     "dhis2-godata-interoperability": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-godata-interoperability.git#develop",
@@ -31,13 +30,15 @@
     "godata-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/godata-api-wrapper.git#develop",
     "lodash": "^4.17.20",
     "ramda": "^0.27.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16",
+    "react-dom": "^16",
     "react-router-dom": "^5.2.0",
     "rxjs": "^6.6.3",
     "styled-components": "^5.2.1",
     "styled-jsx": "^3.3.2",
-    "typeface-roboto": "^1.1.13"
+    "typeface-roboto": "^1.1.13",
+    "typescript": "3.4.3",
+    "@dhis2/app-runtime-adapter-d2": "^1.0.2"
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.6",
@@ -74,7 +75,8 @@
     "appType": "APP",
     "activities": {
       "dhis": {
-        "href": "*"
+        "href": "*",
+        "namespace": "dhis-godata-interoperability"
       }
     },
     "icons": {

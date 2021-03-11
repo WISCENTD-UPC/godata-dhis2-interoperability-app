@@ -8,10 +8,6 @@ const config = {
     },
     DHIS2APIConfig: {
         baseURL: 'http://localhost:8080/api',
-        credentials: {
-            user: 'admin',
-            password: 'district'
-        }
     }
 }
 

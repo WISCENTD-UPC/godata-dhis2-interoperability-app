@@ -5,41 +5,45 @@ import IconButton from '@material-ui/core/IconButton'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import i18n from '@dhis2/d2-i18n' //do translations!
-import { getInstance } from 'd2'
+import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 import _ from 'lodash'
 import '../styles/FileForm.css'
 import config from '../utils/config'
+import { getBaseUrl } from '../index'
 
 
-const FileForm = ({ cryptr }) => {
+const FileForm = () => {
     const [formData, setFormData] = useState(config)
     const [isOk, setOk] = useState(true)
     const [isUploaded, setUploaded] = useState(false)
     const [wrong, setWrong] = useState(false)
     const [show1, setShow1] = useState(false)
     const [show2, setShow2] = useState(false)
+
+    const { d2 } = useD2()
     
     function onFormSubmit() {
 
         async function submit(data) {
-            const d2 = await getInstance()
-            if(await d2.currentUser.dataStore.has("interoperability")) {
-                const namespace = await d2.currentUser.dataStore.get("interoperability")
-                await namespace.set("cred-config", data)
+            const conf = _.cloneDeep(data)
+            conf.DHIS2APIConfig.baseURL = await getBaseUrl() + '/api'
+
+            const password = conf.GoDataAPIConfig.credentials.password
+            conf.GoDataAPIConfig.credentials.password = null
+
+            if(await d2.currentUser.dataStore.has("dhis-godata-interoperability")) {
+                const namespace = await d2.currentUser.dataStore.get("dhis-godata-interoperability")
+                await namespace.set("password", { 'password': password }, false, true)
+                await namespace.set("cred-config", conf)
             } else {
-                const namespace = await d2.currentUser.dataStore.create("interoperability")
-                await namespace.set("cred-config", data)
+                const namespace = await d2.currentUser.dataStore.create("dhis-godata-interoperability")
+                await namespace.set("password", { 'password': password }, false, true)
+                await namespace.set("cred-config", conf)
             }
         }
 
         if (isOk === true) {
-            const conf = _.cloneDeep(formData)
-            const godataPass =  formData.GoDataAPIConfig.credentials.password
-            const dhis2Pass = formData.DHIS2APIConfig.credentials.password
-
-            conf.GoDataAPIConfig.credentials.password = cryptr.encrypt(godataPass)
-            conf.DHIS2APIConfig.credentials.password = cryptr.encrypt(dhis2Pass)
-            submit(conf)
+            submit(formData)
             setUploaded(true)
         } else {
             setWrong(true)
@@ -142,42 +146,8 @@ const FileForm = ({ cryptr }) => {
                         >
                             { show1 ? <Visibility /> : <VisibilityOff /> }
                         </IconButton>
-                        <p className="p">Dhis2 API Configuration</p>
-                        <span className="subtitle">BaseURL:</span>
-                        <input 
-                            className="text-input" 
-                            size="30"
-                            name="DHIS2APIConfig.baseURL" 
-                            value={ formData["DHIS2APIConfig"].baseURL }
-                            onChange={ handleOnChange }
-                        />
-                        <br />
-                        <span className="subtitle">User:</span>
-                        <input 
-                            className="text-input" 
-                            size="15"
-                            name="DHIS2APIConfig.credentials.user" 
-                            value={ formData["DHIS2APIConfig"].credentials.user }
-                            onChange={ handleOnChange }
-                        />
-                        <br />
-                        <span className="subtitle">Password:</span>
-                        <input 
-                            className="text-input" 
-                            type={ show2 ? "text" : "password" }
-                            size="15"
-                            name="DHIS2APIConfig.credentials.password" 
-                            value={ formData["DHIS2APIConfig"].credentials.password }
-                            onChange={ handleOnChange }
-                        />
-                        <IconButton
-                            className="icon-button"
-                            aria-label="toggle password visibility"
-                            onClick={ handleClickShowPassword2 }
-                            onMouseDown={ handleMouseDownPassword }
-                        >
-                            { show2 ? <Visibility /> : <VisibilityOff /> }
-                        </IconButton>
+                        
+                        
                     </div>
                     <div className="import">
                         <Button

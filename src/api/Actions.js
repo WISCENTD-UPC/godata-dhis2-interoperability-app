@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getInstance } from 'd2'
+import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 import { Button, Card } from '@dhis2/ui-core'
 import { Radio, RadioGroup, FormControlLabel, Stepper, Step, StepLabel, StepContent } from '@material-ui/core'
 import StorageIcon from '@material-ui/icons/Storage'
@@ -12,7 +12,7 @@ import { copyOrganisationUnits, fullTransfer, copyCases, createOutbreaks, copyCo
 import '../styles/Actions.css'
 import { getFullSteps, getFullStepContent, getSteps, getStepContent } from '../utils/labels'
 
-const Actions = ({ cryptr }) => {
+const Actions = () => {
     const [config, setConfig] = useState({})
     const [dhis2, setDhis2] = useState(null)
     const [godata, setGoData] = useState(null)
@@ -28,29 +28,26 @@ const Actions = ({ cryptr }) => {
     const [done, setDone] = useState(false)
     const [messages, setMessages] = useState([])
 
+    const { d2 } = useD2()
+
     useEffect(() => {
         async function initInstances() {
-            const d2 = await getInstance()
-            const generalNamespace = await d2.dataStore.get("interoperability")
-            const userNamespace = await d2.currentUser.dataStore.get("interoperability")
+            const generalNamespace = await d2.dataStore.get("dhis-godata-interoperability")
+            const userNamespace = await d2.currentUser.dataStore.get("dhis-godata-interoperability")
             const baseConf = await generalNamespace.get("base-config")
-            const cred = await userNamespace.get("cred-config")
-            const credConf = _.cloneDeep(cred)
-
-            const godataPass =  cred.GoDataAPIConfig.credentials.password
-            const dhis2Pass = cred.DHIS2APIConfig.credentials.password
-
-            credConf.GoDataAPIConfig.credentials.password = cryptr.decrypt(godataPass)
-            credConf.DHIS2APIConfig.credentials.password = cryptr.decrypt(dhis2Pass)
-            
+            const credConf = await userNamespace.get("cred-config")
+            const password = await userNamespace.get("password")
+            credConf.GoDataAPIConfig.credentials.password = password.password
             const conf = mergeAll([baseConf, credConf])
             setConfig(conf)
             setDhis2(new DHIS2API(conf.DHIS2APIConfig))
             setGoData(new GoDataAPI(conf.GoDataAPIConfig))
             
         }
-        initInstances()
-    }, [])
+        if (d2) {
+            initInstances()
+        }
+    }, [d2])
 
     const logAction = (message) => setMessages(prevArray => [...prevArray, { text: message, done: false }])
     const logDone = () => setMessages(prevArray => {
