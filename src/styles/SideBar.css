@@ -1,6 +1,11 @@
 .sidebar {
+    display: block;
+    left: 0px;
     padding-left: 30px;
     padding-top: 40px;
+    position: fixed;
+    top: 60px;
+    bottom: 0px;
     width: 300px;
 }
 

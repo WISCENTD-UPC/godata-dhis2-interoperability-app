@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
-import { AlertBar, Button, Card } from '@dhis2/ui'
+import { AlertBar, Button, Card } from '@dhis2/ui-core'
 import VpnKeyIcon from '@material-ui/icons/VpnKey'
 import IconButton from '@material-ui/core/IconButton'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import i18n from '@dhis2/d2-i18n' //do translations!
+import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 import _ from 'lodash'
 import '../styles/FileForm.css'
 import config from '../utils/config'
-import { useD2 } from '@dhis2/app-runtime-adapter-d2'
+import { getBaseUrl } from '../index'
 
 
-const FileForm = ({ cryptr }) => {
+const FileForm = () => {
     const [formData, setFormData] = useState(config)
     const [isOk, setOk] = useState(true)
     const [isUploaded, setUploaded] = useState(false)
@@ -24,23 +25,25 @@ const FileForm = ({ cryptr }) => {
     function onFormSubmit() {
 
         async function submit(data) {
-            if(await d2.currentUser.dataStore.has("interoperability")) {
-                const namespace = await d2.currentUser.dataStore.get("interoperability")
-                await namespace.set("cred-config", data)
+            const conf = _.cloneDeep(data)
+            conf.DHIS2APIConfig.baseURL = await getBaseUrl() + '/api'
+
+            const password = conf.GoDataAPIConfig.credentials.password
+            conf.GoDataAPIConfig.credentials.password = null
+
+            if(await d2.currentUser.dataStore.has("dhis-godata-interoperability")) {
+                const namespace = await d2.currentUser.dataStore.get("dhis-godata-interoperability")
+                await namespace.set("password", { 'password': password }, false, true)
+                await namespace.set("cred-config", conf)
             } else {
-                const namespace = await d2.currentUser.dataStore.create("interoperability")
-                await namespace.set("cred-config", data)
+                const namespace = await d2.currentUser.dataStore.create("dhis-godata-interoperability")
+                await namespace.set("password", { 'password': password }, false, true)
+                await namespace.set("cred-config", conf)
             }
         }
 
         if (isOk === true) {
-            const conf = _.cloneDeep(formData)
-            const godataPass =  formData.GoDataAPIConfig.credentials.password
-            const dhis2Pass = formData.DHIS2APIConfig.credentials.password
-
-            conf.GoDataAPIConfig.credentials.password = cryptr.encrypt(godataPass)
-            conf.DHIS2APIConfig.credentials.password = cryptr.encrypt(dhis2Pass)
-            submit(conf)
+            submit(formData)
             setUploaded(true)
         } else {
             setWrong(true)
@@ -99,16 +102,16 @@ const FileForm = ({ cryptr }) => {
     }
     
     return (
-        <div className="content-container"> 
+        <div className="container"> 
             <div className="card"> 
                 <Card className="card" dataTest="dhis2-uicore-card">
                     <div className="title-icon">
                         <VpnKeyIcon />
-                        <h3>{i18n.t('Import credentials')}</h3>
+                        <h3>Import credentials</h3>
                     </div>
                     <div className="content">
-                    <p className="p">{i18n.t('GoData API Configuration')}</p>
-                        <span className="subtitle">{i18n.t('BaseURL')}:</span>
+                    <p className="p">GoData API Configuration</p>
+                        <span className="subtitle">BaseURL:</span>
                         <input 
                             className="text-input" 
                             size="30"
@@ -117,7 +120,7 @@ const FileForm = ({ cryptr }) => {
                             onChange={ handleOnChange }
                         />
                         <br />
-                        <span className="subtitle">{i18n.t('Email')}:</span>
+                        <span className="subtitle">Email:</span>
                         <input 
                             className="text-input" 
                             size="15"
@@ -126,7 +129,7 @@ const FileForm = ({ cryptr }) => {
                             onChange={ handleOnChange }
                         />
                         <br />
-                        <span className="subtitle">{i18n.t('Password')}:</span>
+                        <span className="subtitle">Password:</span>
                         <input 
                             className="text-input" 
                             type={ show1 ? "text" : "password" }
@@ -143,50 +146,17 @@ const FileForm = ({ cryptr }) => {
                         >
                             { show1 ? <Visibility /> : <VisibilityOff /> }
                         </IconButton>
-                        <p className="p">{i18n.t('Dhis2 API Configuration')}</p>
-                        <span className="subtitle">{i18n.t('BaseURL')}:</span>
-                        <input 
-                            className="text-input" 
-                            size="30"
-                            name="DHIS2APIConfig.baseURL" 
-                            value={ formData["DHIS2APIConfig"].baseURL }
-                            onChange={ handleOnChange }
-                        />
-                        <br />
-                        <span className="subtitle">{i18n.t('User')}:</span>
-                        <input 
-                            className="text-input" 
-                            size="15"
-                            name="DHIS2APIConfig.credentials.user" 
-                            value={ formData["DHIS2APIConfig"].credentials.user }
-                            onChange={ handleOnChange }
-                        />
-                        <br />
-                        <span className="subtitle">{i18n.t('Password')}:</span>
-                        <input 
-                            className="text-input" 
-                            type={ show2 ? "text" : "password" }
-                            size="15"
-                            name="DHIS2APIConfig.credentials.password" 
-                            value={ formData["DHIS2APIConfig"].credentials.password }
-                            onChange={ handleOnChange }
-                        />
-                        <IconButton
-                            className="icon-button"
-                            aria-label="toggle password visibility"
-                            onClick={ handleClickShowPassword2 }
-                            onMouseDown={ handleMouseDownPassword }
-                        >
-                            { show2 ? <Visibility /> : <VisibilityOff /> }
-                        </IconButton>
+                        
+                        
                     </div>
                     <div className="import">
                         <Button
-                            primary
+                            dataTest="dhis2-uicore-button"
                             name="button"
                             onClick={ onFormSubmit }
+                            type="button"
                         >
-                            {i18n.t('Import')}
+                            Import
                         </Button>
                     </div>
                 </Card>
@@ -197,7 +167,7 @@ const FileForm = ({ cryptr }) => {
                     dataTest="dhis2-uicore-alertbar"
                     icon permanent warning
                 >
-                    {i18n.t('Some fields are in blank')}
+                    Some fields are in blank
                 </AlertBar> }
             { isUploaded && 
                 <div>
@@ -205,7 +175,7 @@ const FileForm = ({ cryptr }) => {
                         dataTest="dhis2-uicore-alertbar"
                         icon permanent success
                     >
-                        {i18n.t('Credentials saved correctly')}
+                        Credentials saved correctly
                     </AlertBar>
                 </div> 
             }
@@ -215,7 +185,7 @@ const FileForm = ({ cryptr }) => {
                         dataTest="dhis2-uicore-alertbar" 
                         icon permanent critical
                     >
-                        {i18n.t('Some fields are in blank')}
+                        Some fields are in blank
                     </AlertBar>
                 </div> 
             }
