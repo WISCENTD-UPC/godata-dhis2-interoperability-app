@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AlertBar, Button, Card } from '@dhis2/ui-core'
 import VpnKeyIcon from '@material-ui/icons/VpnKey'
 import IconButton from '@material-ui/core/IconButton'
@@ -8,12 +8,15 @@ import i18n from '@dhis2/d2-i18n' //do translations!
 import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 import _ from 'lodash'
 import '../styles/FileForm.css'
-import config from '../utils/config'
+import { config } from 'dhis2-godata-interoperability'
 import { getBaseUrl } from '../index'
 
 
 const FileForm = () => {
-    const [formData, setFormData] = useState(config)
+    const [formData, setFormData] = useState({
+        DHIS2APIConfig: config.DHIS2APIConfig,
+        GoDataAPIConfig: config.GoDataAPIConfig
+    })
     const [isOk, setOk] = useState(true)
     const [isUploaded, setUploaded] = useState(false)
     const [wrong, setWrong] = useState(false)
@@ -21,6 +24,21 @@ const FileForm = () => {
     const [show2, setShow2] = useState(false)
 
     const { d2 } = useD2()
+
+    useEffect(() => {
+        async function initInstances() {
+            const userNamespace = await d2.currentUser.dataStore.get("dhis-godata-interoperability")
+            const credConf = await userNamespace.get("cred-config")
+            const password = await userNamespace.get("password")
+            credConf.GoDataAPIConfig.credentials.password = password.password
+            if (credConf != null) {
+                setFormData(credConf)
+            }  
+        }
+        if (d2) {
+            initInstances()
+        }
+    }, [d2])
     
     function onFormSubmit() {
 

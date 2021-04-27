@@ -28,6 +28,7 @@
     "dhis2-godata-interoperability": "git+ssh://git@github.com/WISCENTD-UPC/dhis2-godata-interoperability.git#develop",
     "dotenv": "^8.2.0",
     "godata-api-wrapper": "git+ssh://git@github.com/WISCENTD-UPC/godata-api-wrapper.git#develop",
+    "idb": "^6.0.0",
     "lodash": "^4.17.20",
     "ramda": "^0.27.1",
     "react": "^16",
