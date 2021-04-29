@@ -8,11 +8,11 @@ import { mergeAll } from 'ramda'
 import _ from 'lodash'
 import DHIS2API from 'dhis2-api-wrapper'
 import GoDataAPI from 'godata-api-wrapper'
-import { copyOrganisationUnits, fullTransfer, copyCases, createOutbreaks, copyContacts, copyMetadata } from 'dhis2-godata-interoperability'
+import { copyOrganisationUnits, fullTransferGoData, copyCases, createOutbreaks, copyContacts, copyMetadata } from 'dhis2-godata-interoperability'
 import '../styles/Actions.css'
-import { getFullSteps, getFullStepContent, getSteps, getStepContent } from '../utils/labels'
+import { getFullSteps, getFullStepContent, getSteps, getStepContent } from '../utils/goDataLabels'
 
-const Actions = () => {
+const GoDataActions = () => {
     const [config, setConfig] = useState({})
     const [dhis2, setDhis2] = useState(null)
     const [godata, setGoData] = useState(null)
@@ -78,7 +78,7 @@ const Actions = () => {
                     await copyOrganisationUnits(dhis2, godata, config, { logAction, logDone })()
                     break
                 case 1: 
-                    await fullTransfer(dhis2, godata, config, { logAction, logDone })()//TODO
+                    await fullTransferGoData(dhis2, godata, config, { logAction, logDone })()
                     setDone(true)
                     break
                 default: break
@@ -134,7 +134,7 @@ const Actions = () => {
                 <Card className="card" dataTest="dhis2-uicore-card">
                     <div className="title-icon">
                         <StorageIcon />
-                        <h3>Export data and metadata</h3>
+                        <h3>Export data and metadata to Go.Data</h3>
                     </div>
                     <div className="content">
                         <p className="p">Choose export sequence</p>
@@ -254,4 +254,4 @@ const Actions = () => {
     )
 }
 
-export default Actions
+export default GoDataActions

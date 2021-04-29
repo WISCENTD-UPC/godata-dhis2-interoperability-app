@@ -7,7 +7,8 @@ import {
 import FileForm from './FileForm'
 import Form from './Form'
 import SideBar from './SideBar'
-import Actions from '../api/Actions'
+import GoDataActions from '../api/GoDataActions'
+import Dhis2Actions from '../api/Dhis2Actions'
 
 const Main = () => {
   return (
@@ -16,7 +17,8 @@ const Main = () => {
         <Switch>
           <Route exact path="/credentials" component={ FileForm }/>
           <Route exact path="/settings" component={ Form }/>
-          <Route exact path="/export" component={ Actions }/>
+          <Route exact path="/export" component={ GoDataActions }/>
+          <Route exact path="/import" component={ Dhis2Actions }/>
         </Switch>
     </Router>
   )

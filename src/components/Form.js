@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import * as R from 'ramda'
 import { AlertBar, Button, Card } from '@dhis2/ui-core'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
@@ -7,15 +8,30 @@ import TuneIcon from '@material-ui/icons/Tune'
 import i18n from '@dhis2/d2-i18n' //do translations!
 import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 import '../styles/Form.css'
-import config from '../utils/config.base'
-
+import { config } from 'dhis2-godata-interoperability'
 
 const Form = () => {
-    const [formData, setFormData] = useState(config)
+    const [formData, setFormData] = useState(R.pipe(
+        R.dissoc('GoDataAPIConfig'), 
+        R.dissoc('DHIS2APIConfig')
+    )(config))
     const [isUploaded, setUploaded] = useState(false)
     const showOutbreakGroupingLevel = formData.outbreakCreationMode===0
 
     const { d2 } = useD2()
+
+    useEffect(() => {
+        async function initInstances() {
+            const generalNamespace = await d2.dataStore.get("dhis-godata-interoperability")
+            const baseConf = await generalNamespace.get("base-config")
+            if (baseConf != null) {
+                setFormData(baseConf)
+            }  
+        }
+        if (d2) {
+            initInstances()
+        }
+    }, [d2])
     
     function onFormSubmit() {
         async function submit() {
@@ -265,6 +281,15 @@ const Form = () => {
                             onChange={ handleOnChange }
                         />
                         <br />
+                        <span className="subtitle">Age:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="dhis2KeyAttributes.age" 
+                            value={ formData["dhis2KeyAttributes"].age }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
                         <span className="subtitle">Address:</span>
                         <input 
                             className="text-input" 
@@ -280,15 +305,6 @@ const Form = () => {
                             size="15"
                             name="dhis2KeyAttributes.passport" 
                             value={ formData["dhis2KeyAttributes"].passport }
-                            onChange={ handleOnChange }
-                        />
-                        <p className="p">Default attributes</p>
-                        <span className="subtitle">First Name:</span>
-                        <input 
-                            className="text-input" 
-                            size="15"
-                            name="attributesDefaults.firstName" 
-                            value={ formData["attributesDefaults"].firstName }
                             onChange={ handleOnChange }
                         />
                         <p className="p">Dhis2 Key Data Elements</p>
@@ -325,6 +341,15 @@ const Form = () => {
                             size="15"
                             name="dhis2KeyDataElements.typeOfVaccine" 
                             value={ formData["dhis2KeyDataElements"].typeOfVaccine }
+                            onChange={ handleOnChange }
+                        />
+                        <br />
+                        <span className="subtitle">Lab Test Result:</span>
+                        <input 
+                            className="text-input" 
+                            size="15"
+                            name="dhis2KeyDataElements.typeOfVaccine" 
+                            value={ formData["dhis2KeyDataElements"].labTestResult }
                             onChange={ handleOnChange }
                         />
                         <p className="p">Dhis2 Data Elements Checks</p>
@@ -557,6 +582,7 @@ const Form = () => {
                             value={ formData["rootID"] }
                             onChange={ handleOnChange }
                         />
+                        <div className="helper-text">The rootID value has to be the ID of the tree's root orgUnit that you want to export to Go.Data</div>
                     </div>
                     <div className="import">
                         <Button
