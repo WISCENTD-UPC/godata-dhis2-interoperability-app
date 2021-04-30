@@ -106,6 +106,7 @@ const Dhis2Actions = () => {
                     await copyLocations(dhis2, godata, config, { logAction, logDone, cleanCache })()
                     break
                 case 1: 
+                    await godata.login()
                     await copyTrackedEntities(dhis2, godata, config, { logAction, logDone })()
                     setDone(true)
                     break
